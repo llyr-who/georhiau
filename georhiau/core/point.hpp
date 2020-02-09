@@ -1,11 +1,28 @@
 #include <array>
 
-template <typename T>
+//! point class.
+//! T is the type.
+//! D is the dimension of the space.
+
+namespace georhiau {
+namespace core {
+template <typename T, std::size_t D>
 class point {
 public:
-    point(){};
+    point() {
+        //! We could end up only having D = 2,3.
+        //! As these are the most commonly used dims.
+        std::static_assert(D == 2, "Only implemented for D == 2.");
+    };
+
+    bool operator<(const point<T, D>& r) {
+        return m_data[0] < r.m_data[0] ||
+               (m_data[0] == r.m_data[0] && m_data[1] < r.m_data[1]);
+    }
 
 private:
-    std::array<T, 2> m_data;
+    std::array<T, D> m_data;
 }
+}  // namespace core
+}  // namespace georhiau
 
