@@ -12,7 +12,7 @@ public:
     point() {
         //! We could end up only having D = 2,3.
         //! As these are the most commonly used dims.
-        std::static_assert(D == 2, "Only implemented for D == 2.");
+        static_assert(D == 2, "Only implemented for D == 2.");
     };
 
     bool operator<(const point<T, D>& r) {
@@ -22,7 +22,7 @@ public:
 
 private:
     std::array<T, D> m_data;
-}
+};
 }  // namespace core
 }  // namespace georhiau
 
