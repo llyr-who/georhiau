@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include "core/point.hpp"
+#include "core/vertex.hpp"
 
 int main() {
-    using point = georhiau::core::point<double, 2>;
+    using vertex = georhiau::core::vertex<double, 2>;
 
-    point p = {1.0,1.0};
+    vertex p = {1.0,1.0};
 }
