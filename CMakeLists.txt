@@ -8,6 +8,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS YES) # for completion
 
 include_directories(georhiau)
 
-add_executable(georhiau georhiau/driver/main.cpp)
+add_executable(driver georhiau/driver/main.cpp)
+
+include(cmake/googletest.cmake)
+fetch_googletest(
+    ${PROJECT_SOURCE_DIR}/cmake
+    ${PROJECT_BINARY_DIR}/googletest
+    )
+
+
 
 add_subdirectory(docs)
+add_subdirectory(georhiau)

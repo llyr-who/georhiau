@@ -5,5 +5,5 @@
 int main() {
     using point = georhiau::core::point<double, 2>;
 
-    point p;
+    point p = {1.0,1.0};
 }
