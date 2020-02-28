@@ -10,7 +10,6 @@ namespace core {
 template <typename T, std::size_t D>
 class vertex {
 public:
-
     vertex() : m_c({}) {}
 
     template <typename... Ts,
@@ -25,15 +24,20 @@ public:
         static_assert(D == 2, "Only implemented for D == 2.");
     }
 
-    bool operator<(const vertex<T, D>& r) {
+    bool operator<(const vertex<T, D>& r) const {
         return m_c[0] < r.m_c[0] ||
                (std::fabs(m_c[0] - r.m_c[0]) < 1e-6 && m_c[1] < r.m_c[1]);
     }
 
-    bool operator==(const vertex<T,D>& r) {
-        //std::transform(m_c.begin(), m_c.end(), r.m_c.begin(), 
+    bool operator==(const vertex<T, D>& r) const {
+        // they are guarenteed to be the same length at compile
+        // time, so there really is no need to be using iterators :)
+        for (std::size_t i = 0; i < D; ++i) {
+            if (m_c[i] != r.m_c[i]) return false;
+        }
         return true;
     }
+
 private:
     std::array<T, D> m_c;
 };

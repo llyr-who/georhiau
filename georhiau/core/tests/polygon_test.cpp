@@ -17,8 +17,9 @@ TEST(polygon, construction) {
 
     // dump verts
     auto vs = pol.dump_verts();
-    polygon<3>::vertices va = {a,b,c};
+    polygon<3>::vertices va = {a, b, c};
 
-    // are they equal
+    // are they equal ?
+    // If yes then our constructor works :)
     ASSERT_TRUE(vs == va);
 }
