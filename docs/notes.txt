@@ -1,0 +1,3 @@
+on completing triangulation, we need to add some sort of graph colouring (provided by boost::graph).
+
+this information can then be passed to the display engine (whatever that may be)
