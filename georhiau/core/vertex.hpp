@@ -10,6 +10,18 @@ namespace core {
 template <typename T, std::size_t D>
 class vertex {
 public:
+    enum class orientation {
+        Left,
+        Right,
+        Beyond,
+        Behind,
+        Between,
+        Origin,
+        Destination
+    };
+
+    T tol = std::numeric_limits<T>::min();
+
     vertex() : m_c({}) {}
 
     template <typename... Ts,
@@ -26,21 +38,39 @@ public:
 
     bool operator<(const vertex<T, D>& r) const {
         return m_c[0] < r.m_c[0] ||
-               (std::fabs(m_c[0] - r.m_c[0]) < 1e-6 && m_c[1] < r.m_c[1]);
+               (std::fabs(m_c[0] - r.m_c[0]) < tol && m_c[1] < r.m_c[1]);
     }
 
     bool operator==(const vertex<T, D>& r) const {
-        // they are guarenteed to be the same length at compile
-        // time, so there really is no need to be using iterators :)
-        for (std::size_t i = 0; i < D; ++i) {
-            if (m_c[i] != r.m_c[i]) return false;
-        }
-        return true;
+        return (std::fabs(m_c[0] - r.m_c[0]) < tol) &&
+               (std::fabs(m_c[1] - r.m_c[1]) < tol);
+    }
+
+    vertex operator-(const vertex<T, D>& r) const {
+        vertex{m_c[0] - r.m_c[0], m_c[1] - r.m_c[1]};
     }
 
 private:
     std::array<T, D> m_c;
 };
+
+template <typename T, std::size_t D>
+inline int classify(const vertex<T, D>& p0, const vertex<T, D>& p1,
+                    const vertex<T, D>& p2) {
+    auto a = p1 - p0;
+    auto b = p2 - p0;
+
+    // z component of cross product.
+    T c_p_z = a.x * b.y - b.x * a.y;
+    // The sign will indicate whether the point p2
+    // is to the right or the left of the line
+    // segment defined by p0 and p1.
+    if (c_p_z > 0.0) return vertex<T, D>::orientation::Left;
+    if (c_p_z < 0.0) return vertex<T, D>::orientation::Right;
+    // If we have not returned yet then
+    // a and b define colinear, line segments.
+}
+
 }  // namespace core
 }  // namespace georhiau
 
