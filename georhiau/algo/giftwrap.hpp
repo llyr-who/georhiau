@@ -1,7 +1,9 @@
+#pragma once
+#include <algorithm>
 #include <vector>
 
-#include "georhiau/core/edge.hpp"
-#include "georhiau/core/point.hpp"
+#include "core/edge.hpp"
+#include "core/vertex.hpp"
 
 namespace georhiau {
 namespace algo {
@@ -10,25 +12,26 @@ template <typename T>
 using edge = georhiau::core::edge<double, 2>;
 
 template <typename T>
-using point = georhiau::core::point<double, 2>;
+using vertex = georhiau::core::vertex<double, 2>;
 
 template <typename T>
-auto smallest_point(const std::vector<point<T>>& cloud) {
-    return std::min_element(clound.begin(), cloud.end());
+auto smallest_vertex(const std::vector<vertex<T>>& cloud) {
+    return std::min_element(cloud.begin(), cloud.end());
 }
 
 template <typename T>
-auto first_hull_edge(const std::vector<point<T>>& cloud) {
+auto first_hull_edge(const std::vector<vertex<T>>& cloud) {
 
-    auto smallest = smallest_point(cloud);
+    auto smallest = smallest_vertex(cloud);
     std::iter_swap(smallest, cloud.begin());
 
-    for (std::size_t m = 1, i = 2; i < cloud.size(); ++i) {
+    std::size_t m = 1, i = 2;
+    for (; i < cloud.size(); ++i) {
         auto orientation =
-            point<T>::classify(cloud.front(), cloud[m], cloud[i]);
+            vertex<T>::classify(cloud.front(), cloud[m], cloud[i]);
 
-        if ((orientation == point<T>::orientation::Left) ||
-            (orientation == point<T>::orientation::Between)) {
+        if ((orientation == vertex<T>::orientation::Left) ||
+            (orientation == vertex<T>::orientation::Between)) {
             m = i;
         }
     }
