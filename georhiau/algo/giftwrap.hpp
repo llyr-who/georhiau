@@ -16,19 +16,19 @@ using vertex = georhiau::core::vertex<double, 2>;
 
 template <typename T>
 auto smallest_vertex(const std::vector<vertex<T>>& cloud) {
-    return std::min_element(cloud.begin(), cloud.end());
+    if (cloud.empty()) throw std::runtime_error("empty");
+    return *std::min_element(cloud.begin(), cloud.end());
 }
 
 template <typename T>
-auto first_hull_edge(const std::vector<vertex<T>>& cloud) {
-
-    auto smallest = smallest_vertex(cloud);
-    std::iter_swap(smallest, cloud.begin());
+auto first_hull_edge(std::vector<vertex<T>>& cloud) {
+    auto smallest = smallest_vertex<T>(cloud);
+    // iter_swap or swap?
+    std::swap(smallest, cloud.front());
 
     std::size_t m = 1, i = 2;
     for (; i < cloud.size(); ++i) {
-        auto orientation =
-            vertex<T>::classify(cloud.front(), cloud[m], cloud[i]);
+        auto orientation = core::classify(cloud.front(), cloud[m], cloud[i]);
 
         if ((orientation == vertex<T>::orientation::Left) ||
             (orientation == vertex<T>::orientation::Between)) {
