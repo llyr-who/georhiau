@@ -1,3 +1,4 @@
+#pragma once
 #include <array>
 #include <cmath>
 #include <iostream>
@@ -8,6 +9,7 @@
 
 namespace georhiau {
 namespace core {
+
 template <typename T, std::size_t D>
 class vertex {
 public:
@@ -53,9 +55,19 @@ public:
 
     const T& operator[](const std::size_t& i) const { return m_c[i]; }
 
+    auto data() const { return m_c; }
+
 private:
     std::array<T, D> m_c;
 };
+
+template <typename T, std::size_t D>
+inline void print(const vertex<T, D>& p) {
+    std::cout << std::endl;
+    for (const auto& d : p.data()) {
+        std::cout << d << ' ';
+    }
+}
 
 template <typename T, std::size_t D>
 inline T norm(const vertex<T, D>& p) {
