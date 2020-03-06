@@ -12,7 +12,7 @@ TEST(giftwrap, smallest_vertex) {
     vertex v3 = {3.0, 3.0};
     std::vector<vertex> cloud{v1, v2, v3};
 
-    ASSERT_EQ(georhiau::algo::smallest_vertex<double>(cloud), v1);
+    ASSERT_EQ(*georhiau::algo::smallest_vertex<double>(cloud), v1);
 }
 
 TEST(gitwrap, first_hull_edge) {
@@ -30,9 +30,5 @@ TEST(gitwrap, first_hull_edge) {
 
     auto hull_edge = georhiau::algo::first_hull_edge<double>(cloud);
     edge hull_edge_ans(v4,v1);
-
-    georhiau::core::print(hull_edge);
-    georhiau::core::print(hull_edge_ans);
-
     ASSERT_EQ(hull_edge, hull_edge_ans);
 }
