@@ -12,6 +12,13 @@ TEST(vertex, less_than) {
     ASSERT_FALSE(b < c);
 }
 
+TEST(vertex, multiply_by_const) {
+    vertex_2d v = {1.0, 1.0};
+    auto act_result = 10.0 * v;
+    vertex_2d exp_result = {10.0, 10.0};
+    ASSERT_EQ(act_result, exp_result);
+}
+
 TEST(vertex, classify) {
     vertex_2d a = {1.0, 1.0};
     vertex_2d b = {2.0, 2.0};
