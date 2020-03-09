@@ -61,6 +61,10 @@ public:
         return vertex{a * m_c[0], a * m_c[1]};
     }
 
+    T operator*(const vertex& v) {
+        return v.m_c[0] * m_c[0] + v.m_c[1] * m_c[1];
+    }
+
     const T& operator[](const std::size_t& i) const { return m_c[i]; }
 
     auto data() const { return m_c; }

@@ -16,6 +16,7 @@ public:
 
     vertex<T, D> orig() const { return m_orig; }
     vertex<T, D> dest() const { return m_dest; }
+    vertex<T, D> midpoint() const { return 0.5 * (m_orig + m_dest); }
 
 private:
     vertex<T, D> m_orig;
@@ -28,7 +29,7 @@ inline edge<T, D> rotate(const edge<T, D>& e) {
     auto dest = e.dest();
 
     // midpoint
-    auto m = 0.5 * (orig + dest);
+    auto m = e.midpoint();
     auto dir = dest - orig;
     vertex<T, D> normal_dir = {1.0 * dir.data()[1], -1.0 * dir.data()[0]};
     // note that cross(dir,normal_dir) > 0
