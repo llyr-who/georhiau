@@ -3,9 +3,18 @@
 
 namespace georhiau {
 namespace core {
+
 template <typename T, std::size_t D>
 class edge {
 public:
+    enum class intersection {
+        Colinear,
+        Parallel,
+        Skew,
+        SkewCross,
+        SkewNoCross
+    };
+
     explicit edge(vertex<T, D> o, vertex<T, D> d) : m_orig(o), m_dest(d) {
         static_assert(D == 2, "Only implemented for D == 2.");
     }
@@ -22,6 +31,14 @@ private:
     vertex<T, D> m_orig;
     vertex<T, D> m_dest;
 };
+
+template <typename T, std::size_t D>
+using intersect_type_param = std::pair<typename edge<T, D>::intersection, T>;
+
+// returns intersection type and parameter
+template <typename T, std::size_t D>
+inline intersect_type_param<T, D> intersect(const edge<T, D>& e1,
+                                            const edge<T, D>& e2) {}
 
 template <typename T, std::size_t D>
 inline edge<T, D> rotate(const edge<T, D>& e) {

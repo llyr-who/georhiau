@@ -51,19 +51,12 @@ auto mate2(const edge<T>& e, const std::vector<vertex<T>>& cloud) {
     T t, best_t = std::numeric_limits<T>::max();
     auto e_rot = georhiau::core::rotate(e);
     for (auto pnt = cloud.begin(); pnt != cloud.end(); ++pnt) {
-        // obtain midpoint
-        auto m = e.midpoint();
-        // change of origin
-        auto coo = *pnt - m;
-        auto bisec_vec = e.orig() - m;
-        // project coo (change of origin) onto e_rot(ten) (90's punk rock apple
-        // product)
-        t = coo * bisec_vec;
-        if (t <= 0) continue;  // not rhs
-        if (t < best_t) {
-            best_t = t;
-            best_p = pnt;
+        if (georhiau::core::classify(e.orig(), e.dest(), *pnt) !=
+            vertex<T>::orientation::Right) {
+            continue;
         }
+        edge<T> rotate(edge<T>{e.dest(), *pnt});
+        
     }
     return best_p;
 }
