@@ -17,4 +17,6 @@ set(DOXYGEN_HIDE_UNDOC_RELATIONS NO)
 
 set(DOXYGEN_EXCLUDE_PATTERNS "*/tests/*")
 
-doxygen_add_docs(core WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+doxygen_add_docs(core
+                 algos
+                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
