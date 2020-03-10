@@ -35,10 +35,31 @@ private:
 template <typename T, std::size_t D>
 using intersect_type_param = std::pair<typename edge<T, D>::intersection, T>;
 
-// returns intersection type and parameter
+//
+// returns intersection type and parameter.
+//
 template <typename T, std::size_t D>
 inline intersect_type_param<T, D> intersect(const edge<T, D>& e1,
-                                            const edge<T, D>& e2) {}
+                                            const edge<T, D>& e2) {
+    auto a = e1.orig();
+    auto b = e1.dest();
+    auto c = e2.orig();
+    auto d = e2.dest();
+    auto cd_data = (d - c).data();
+    vertex<T, D> n = {1.0 * cd_data[1], -1.0 * cd_data[0]};
+    auto proj = n * (b - a);
+    // if proj is zero then (a,b) and (c,d) are parallel. (or even colinear)
+    if (std::abs(proj) <= std::numeric_limits<T>::min()) {
+        auto point_class = classify(e2.orig(), e2.dest(), e1.orig());
+        if ((point_class == vertex<T, D>::orientation::Left) ||
+            (point_class == vertex<T, D>::orientation::Right)) {
+            return std::make_pair(edge<T, D>::intersection::Parallel, T());
+        } else {
+            return std::make_pair(edge<T, D>::intersection::Colinear, T());
+        }
+    }
+    return std::make_pair(edge<T, D>::intersection::Skew, (n * (c - a)) / proj);
+}
 
 template <typename T, std::size_t D>
 inline edge<T, D> rotate(const edge<T, D>& e) {
