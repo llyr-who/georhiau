@@ -5,7 +5,7 @@ namespace core {
 template <typename T, std::size_t N>
 class polygon {
 public:
-    using vertex   = georhiau::core::vertex<T, 2>;
+    using vertex = georhiau::core::vertex<T, 2>;
     using vertices = std::array<vertex, N>;
 
     template <typename... Ts,
@@ -17,7 +17,8 @@ public:
         m_vs = std::array<vertex, N>{std::forward<Ts>(verts)...};
     }
 
-    vertices dump_verts() { return m_vs; } 
+    vertices dump_verts() { return m_vs; }
+
 private:
     vertices m_vs;
 };
