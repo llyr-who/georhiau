@@ -53,6 +53,18 @@ public:
         return vertex{m_c[0] - r.m_c[0], m_c[1] - r.m_c[1]};
     }
 
+    vertex operator+(const vertex<T, D>& r) const {
+        return vertex{m_c[0] + r.m_c[0], m_c[1] + r.m_c[1]};
+    }
+
+    vertex operator*=(const T& a) const {
+        return vertex{a * m_c[0], a * m_c[1]};
+    }
+
+    T operator*(const vertex& v) {
+        return v.m_c[0] * m_c[0] + v.m_c[1] * m_c[1];
+    }
+
     const T& operator[](const std::size_t& i) const { return m_c[i]; }
 
     auto data() const { return m_c; }
@@ -67,6 +79,11 @@ inline void print(const vertex<T, D>& p) {
     for (const auto& d : p.data()) {
         std::cout << d << ' ';
     }
+}
+
+template <typename T, std::size_t D>
+inline vertex<T, D> operator*(const T& a, const vertex<T, D>& v) {
+    return v *= a;
 }
 
 template <typename T, std::size_t D>
