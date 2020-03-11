@@ -29,3 +29,14 @@ TEST(edge, intersect) {
     ASSERT_NEAR(where, 0.5, 1e-6);
     ASSERT_EQ(how, edge_2d::intersection::Skew);
 }
+
+TEST(edge, less_than) {
+    vert_2d a = {1.0, 1.0};
+    vert_2d b = {1.0, 3.0};
+    edge_2d e1(a, b);
+    vert_2d c = {0.0, 2.0};
+    vert_2d d = {2.0, 2.0};
+    edge_2d e2(c, d);
+
+    ASSERT_TRUE(e1 < e2);
+}
