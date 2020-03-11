@@ -1,4 +1,4 @@
-#include "algo/mate.hpp"
+
 
 #include "gtest/gtest.h"
 
@@ -20,10 +20,11 @@ TEST(mate, basic) {
     vertex dst = {0.0, 1.0};
     edge edg(org, dst);
 
-    auto r1 = georhiau::algo::mate<double>(edg,cloud);
-    georhiau::core::print(*r1);
-
-    auto r2 = georhiau::algo::mate2<double>(edg,cloud);
-    georhiau::core::print(*r2);
+    auto r1 = georhiau::algo::mate<double>(edg, cloud);
+    auto r2 = georhiau::algo::mate2<double>(edg, cloud);
+    // Does it get the correct answer?
+    ASSERT_EQ(*r1, a);
+    // Does it match the other one?
+    ASSERT_EQ(*r1, *r2);
 }
 
