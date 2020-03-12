@@ -32,6 +32,8 @@ public:
             return true;
     }
 
+    const vertex<T, D>& orig_ref() const { return m_orig; }
+    const vertex<T, D>& dest_ref() const { return m_dest; }
     vertex<T, D> orig() const { return m_orig; }
     vertex<T, D> dest() const { return m_dest; }
     vertex<T, D> midpoint() const { return 0.5 * (m_orig + m_dest); }
