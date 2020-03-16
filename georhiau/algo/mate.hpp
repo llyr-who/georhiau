@@ -30,7 +30,7 @@ auto mate(const edge<T>& e, const std::vector<vertex<T>>& cloud) {
         auto m = e.midpoint();
         // change of origin
         auto coo = *pnt - m;
-        auto bisec_vec = e.dest() - m;
+        auto bisec_vec = e_rot.dest() - m;
         // project coo (change of origin) onto e_rot(ten) (90's punk rock apple
         // product)
         t = coo * bisec_vec;

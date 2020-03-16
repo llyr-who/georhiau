@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_EXPORT_COMPILE_COMMANDS YES) # for completion
 
+enable_testing()
+
 include_directories(georhiau)
 
 add_executable(driver georhiau/driver/main.cpp)
