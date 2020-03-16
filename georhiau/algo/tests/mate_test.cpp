@@ -28,3 +28,19 @@ TEST(mate, basic) {
     ASSERT_EQ(*r1, *r2);
 }
 
+// found a case in debuggind delauney
+TEST(mate, single_triangle) {
+    // create triangle point cloud
+    vertex a = {0.0, 0.0};
+    vertex b = {2.0, 0.0};
+    vertex c = {2.0, 2.0};
+    std::vector<vertex> cloud = {a, b, c};
+    edge edg(a, c);
+
+    auto r1 = georhiau::algo::mate<double>(edg, cloud);
+    auto r2 = georhiau::algo::mate2<double>(edg, cloud);
+    // Does it get the correct answer?
+    ASSERT_EQ(*r1, b);
+    // Does it match the other one?
+    ASSERT_EQ(*r1, *r2);
+}

@@ -8,9 +8,9 @@ using polygon = georhiau::core::polygon<double, N>;
 using vertex = georhiau::core::vertex<double, 2>;
 
 TEST(polygon, construction) {
-    vertex a = {1.0, 1.0};
-    vertex b = {1.0, 2.0};
-    vertex c = {2.0, 2.0};
+    const vertex a = {1.0, 1.0};
+    const vertex b = {1.0, 2.0};
+    const vertex c = {2.0, 2.0};
 
     // generate polygon
     polygon<3> pol = {a, b, c};

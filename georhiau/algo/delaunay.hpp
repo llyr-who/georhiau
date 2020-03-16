@@ -27,11 +27,7 @@ void update_frontier(std::set<edge<T>>& frontier, const vertex<T>& a,
     edge<T> e(a, b);
     auto it = frontier.find(e);
     if (it == frontier.end()) {
-        std::cout << "going in" << std::endl;
-        georhiau::core::print(e);
         auto flip = georhiau::core::flip(e);
-        std::cout << "flipped" << std::endl;
-        georhiau::core::print(flip);
         frontier.insert(flip);
     } else {
         frontier.erase(it);
@@ -46,13 +42,12 @@ auto delaunay(std::vector<vertex<T>>& cloud) {
     frontier.insert(e);
     while (!frontier.empty()) {
         auto e = *frontier.begin();
-        georhiau::core::print(e);
         frontier.erase(frontier.begin());  // remove min.
-        auto p = mate(e, cloud);
+        auto p = mate2(e, cloud);
         if (p == cloud.end()) continue;
         update_frontier(frontier, *p, e.orig());
         update_frontier(frontier, e.dest(), *p);
-        //triangle<T> t(e.orig_ref(), e.dest_ref(), *p);
+        triangles.push_back(triangle<T>{e.orig_ref(), e.dest_ref(), *p});
     }
     return triangles;
 }
