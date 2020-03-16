@@ -13,10 +13,10 @@ namespace algo {
 
 // rsi prevention
 template <typename T>
-using edge = georhiau::core::edge<double, 2>;
+using edge = georhiau::core::edge<T, 2>;
 
 template <typename T>
-using vertex = georhiau::core::vertex<double, 2>;
+using vertex = georhiau::core::vertex<T, 2>;
 
 // mate version 1 (my version)
 // if the return value is cloud.end() then we have failed

@@ -23,6 +23,17 @@ public:
         return ((m_orig == e.m_orig) && (m_dest == e.m_dest));
     }
 
+    bool operator<(const edge<T, D>& e) const {
+        if (m_orig < e.m_orig) return false;
+        if (e.m_orig < m_orig) return true;
+        if (m_dest < e.m_dest)
+            return false;
+        else
+            return true;
+    }
+
+    const vertex<T, D>& orig_ref() const { return m_orig; }
+    const vertex<T, D>& dest_ref() const { return m_dest; }
     vertex<T, D> orig() const { return m_orig; }
     vertex<T, D> dest() const { return m_dest; }
     vertex<T, D> midpoint() const { return 0.5 * (m_orig + m_dest); }
@@ -72,6 +83,11 @@ inline edge<T, D> rotate(const edge<T, D>& e) {
     vertex<T, D> normal_dir = {1.0 * dir.data()[1], -1.0 * dir.data()[0]};
     // note that cross(dir,normal_dir) > 0
     return edge<T, D>(m - 0.5 * normal_dir, m + 0.5 * normal_dir);
+}
+
+template <typename T, std::size_t D>
+inline edge<T, D> flip(const edge<T, D>& e) {
+    return edge<T, D>(e.dest(), e.orig());
 }
 
 template <typename T, std::size_t D>

@@ -9,10 +9,10 @@ namespace georhiau {
 namespace algo {
 
 template <typename T>
-using edge = georhiau::core::edge<double, 2>;
+using edge = georhiau::core::edge<T, 2>;
 
 template <typename T>
-using vertex = georhiau::core::vertex<double, 2>;
+using vertex = georhiau::core::vertex<T, 2>;
 
 template <typename T>
 auto smallest_vertex(std::vector<vertex<T>>& cloud) {
