@@ -25,11 +25,14 @@ template <typename T>
 void update_frontier(std::set<edge<T>>& frontier, const vertex<T>& a,
                      const vertex<T>& b) {
     edge<T> e(a, b);
+    std::cout << "edge we are looking for" << std::endl;
+    georhiau::core::print(e);
     auto it = frontier.find(e);
     if (it == frontier.end()) {
         auto flip = georhiau::core::flip(e);
         frontier.insert(flip);
     } else {
+        std::cout << "got it" << std::endl;
         frontier.erase(it);
     }
 }
@@ -40,6 +43,7 @@ auto delaunay(std::vector<vertex<T>>& cloud) {
     std::set<edge<T>> frontier;
     auto e = georhiau::algo::first_hull_edge<T>(cloud);
     frontier.insert(e);
+    std::size_t I = 0;
     while (!frontier.empty()) {
         auto e = *frontier.begin();
         frontier.erase(frontier.begin());  // remove min.
@@ -48,6 +52,12 @@ auto delaunay(std::vector<vertex<T>>& cloud) {
         update_frontier(frontier, *p, e.orig());
         update_frontier(frontier, e.dest(), *p);
         triangles.push_back(triangle<T>{e.orig_ref(), e.dest_ref(), *p});
+        auto t = triangle<T>{e.orig_ref(), e.dest_ref(), *p};
+        /*
+        georhiau::core::print(t);
+        std::cout << std::endl;
+        std::cout << I++ << std::endl;
+         */
     }
     return triangles;
 }
