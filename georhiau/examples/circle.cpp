@@ -11,7 +11,7 @@ int main() {
 
     std::size_t N = 10;
     for (std::size_t i = 0; i < N; ++i) {
-        double t = 2 * 3.1459 * (i / N);
+        double t = 2.0 * 3.1459 * i * (1.0/static_cast<double>(N));
         cloud.push_back(vertex{std::cos(t), std::sin(t)});
     }
     cloud.push_back(vertex{0.0, 0.0});
