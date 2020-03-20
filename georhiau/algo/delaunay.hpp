@@ -22,17 +22,29 @@ template <typename T>
 using triangle = georhiau::core::triangle<T>;
 
 template <typename T>
+void print_frontier(const std::set<edge<T>>& frontier) {
+    std::cout << "state of front" << std::endl;
+    for (const auto& e : frontier) {
+        georhiau::core::print(e);
+    }
+}
+
+template <typename T>
 void update_frontier(std::set<edge<T>>& frontier, const vertex<T>& a,
                      const vertex<T>& b) {
     edge<T> e(a, b);
-    std::cout << "edge we are looking for" << std::endl;
+    // std::cout << "edge we are looking for" << std::endl;
+    // georhiau::core::print(e);
+    std::cout << " we are looking for " << std::endl;
     georhiau::core::print(e);
+    std::cout << "what is in there" << std::endl;
+    print_frontier(frontier);
     auto it = frontier.find(e);
     if (it == frontier.end()) {
         auto flip = georhiau::core::flip(e);
         frontier.insert(flip);
     } else {
-        std::cout << "got it" << std::endl;
+        //    std::cout << "got it" << std::endl;
         frontier.erase(it);
     }
 }
@@ -46,6 +58,7 @@ auto delaunay(std::vector<vertex<T>>& cloud) {
     std::size_t I = 0;
     while (!frontier.empty()) {
         auto e = *frontier.begin();
+        //        print_frontier(frontier);
         frontier.erase(frontier.begin());  // remove min.
         auto p = mate2(e, cloud);
         if (p == cloud.end()) continue;
