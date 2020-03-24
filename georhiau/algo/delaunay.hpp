@@ -50,14 +50,28 @@ public:
     
     void update(const vertex<T>& a, const vertex<T>& b) {
         auto e = edge<T>{a, b};
+        auto e_rev = edge<T>{b, a};
         auto it_fron = m_fron.find(e);
+        auto it_rev_fron = m_fron.find(e_rev);
+        
+        // we are going to add the reverse, if it is already there
+        // we do not need to add it again.
+        // in fact, we can classify it as dead now
+        if(it_rev_fron != m_fron.end()) {
+            m_fron.erase(it_rev_fron);
+            m_dead.push_back(*it_rev_fron);
+            return;
+        }
+        
+        auto fi = f_item(e);
+        
+        // is it dead?
+        auto it_dead = std::find(m_dead.begin(), m_dead.end(), fi);
+        if(it_dead != m_dead.end()) return;
+        
+        // if it isnt dead and its reverse has not been added
         if (it_fron == m_fron.end()) {
-            auto fi = f_item(e);
-            auto it_dead = std::find(m_dead.begin(), m_dead.end(), fi);
-            if (it_dead == m_dead.end()) {
-                edge<T> re{b, a};
-                m_fron.insert(re);
-            }
+            m_fron.insert(e_rev);
         } else {
             m_fron.erase(it_fron);
             m_dead.push_back(*it_fron);
@@ -67,6 +81,7 @@ public:
     auto pop_min() {
         auto min = *m_fron.begin();
         m_fron.erase(m_fron.begin());
+        m_dead.push_back(*m_fron.begin());
         return min;
     }
 

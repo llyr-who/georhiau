@@ -41,3 +41,19 @@ TEST(delaunay, square) {
 
     ASSERT_EQ(tngltn.size(), 2);
 }
+
+double pi() { return std::atan(1)*4; }
+
+TEST(delaunay, circle) {
+    std::vector<vertex> cloud1;
+    std::size_t N = 3;
+    for (std::size_t i = 0; i < N; ++i) {
+        double t = 2.0 * pi() * i * (1.0/static_cast<double>(N));
+        cloud1.push_back(vertex{std::cos(t), std::sin(t)});
+    }
+    cloud1.push_back(vertex{0.0, 0.0});
+
+    ASSERT_EQ(4,cloud.size());
+    auto tris = georhiau::algo::delaunay(cloud);
+    ASSERT_EQ(3,tris.size()));
+}
