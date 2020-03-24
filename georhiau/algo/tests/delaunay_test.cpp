@@ -45,6 +45,7 @@ TEST(delaunay, square) {
 double pi() { return std::atan(1)*4; }
 
 TEST(delaunay, circle) {
+    
     std::vector<vertex> cloud1;
     std::size_t N = 3;
     for (std::size_t i = 0; i < N; ++i) {
@@ -53,7 +54,20 @@ TEST(delaunay, circle) {
     }
     cloud1.push_back(vertex{0.0, 0.0});
 
-    ASSERT_EQ(4,cloud.size());
-    auto tris = georhiau::algo::delaunay(cloud);
-    ASSERT_EQ(3,tris.size()));
+    ASSERT_EQ(N+1,cloud1.size());
+    auto tris = georhiau::algo::delaunay(cloud1);
+    ASSERT_EQ(N,tris.size()));
+    
+    std::vector<vertex> cloud2;
+    std::size_t N = 10;
+    for (std::size_t i = 0; i < N; ++i) {
+        double t = 2.0 * pi() * i * (1.0/static_cast<double>(N));
+        cloud2.push_back(vertex{std::cos(t), std::sin(t)});
+    }
+    cloud2.push_back(vertex{0.0, 0.0});
+
+    ASSERT_EQ(N+1,cloud2.size());
+    auto tris = georhiau::algo::delaunay(cloud2);
+    ASSERT_EQ(N,tris.size()));
+    
 }

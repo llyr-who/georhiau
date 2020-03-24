@@ -39,7 +39,7 @@ private:
     };
 
     std::set<edge<T>> m_fron;
-    std::vector<f_item> m_dead;
+    std::set<edge<T>> m_dead;
 
 public:
     frontier() {}
@@ -51,37 +51,36 @@ public:
     void update(const vertex<T>& a, const vertex<T>& b) {
         auto e = edge<T>{a, b};
         auto e_rev = edge<T>{b, a};
+        
+        // Look for the edge or it's reverse.
+        // If we find the reverse then we need to quit early...
         auto it_fron = m_fron.find(e);
         auto it_rev_fron = m_fron.find(e_rev);
         
-        // we are going to add the reverse, if it is already there
-        // we do not need to add it again.
-        // in fact, we can classify it as dead now
+        // as we have not yet popped it off and dealt with it.
         if(it_rev_fron != m_fron.end()) {
-            m_fron.erase(it_rev_fron);
-            m_dead.push_back(*it_rev_fron);
             return;
         }
         
-        auto fi = f_item(e);
-        
-        // is it dead?
-        auto it_dead = std::find(m_dead.begin(), m_dead.end(), fi);
+        // If is has been dealt with (e_rev) and
+        // we attempt to add it again, we need to check this.
+        // i.e does this edge exist in the graveyard?
+        auto it_dead = m_dead.find(e_rev);
         if(it_dead != m_dead.end()) return;
         
-        // if it isnt dead and its reverse has not been added
+        // If the edge is not dead then we can continue;
         if (it_fron == m_fron.end()) {
             m_fron.insert(e_rev);
         } else {
             m_fron.erase(it_fron);
-            m_dead.push_back(*it_fron);
+            m_dead.insert(*it_fron);
         }
     }
 
     auto pop_min() {
         auto min = *m_fron.begin();
+        m_dead.insert(min);
         m_fron.erase(m_fron.begin());
-        m_dead.push_back(*m_fron.begin());
         return min;
     }
 
