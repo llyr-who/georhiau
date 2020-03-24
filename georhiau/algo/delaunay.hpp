@@ -24,20 +24,6 @@ using triangle = georhiau::core::triangle<T>;
 template <typename T>
 class frontier {
 private:
-    // private helper class to encap. an edge
-    struct f_item {
-        edge<T> m_e;
-
-        f_item(const vertex<T>& a, const vertex<T>& b) : m_e{a, b} {}
-        f_item(const edge<T>& e) : m_e{e} {}
-        // loosing equality on edge
-        bool operator==(const f_item& fi) {
-            auto e_rot = georhiau::core::rotate(fi.m_e);
-            if (m_e == fi.m_e || m_e == e_rot) return true;
-            return false;
-        }    
-    };
-
     std::set<edge<T>> m_fron;
     std::set<edge<T>> m_dead;
 
@@ -52,11 +38,8 @@ public:
         auto e = edge<T>{a, b};
         auto e_rev = edge<T>{b, a};
         
-        // Look for the edge or it's reverse.
         // If we find the reverse then we need to quit early...
-        auto it_fron = m_fron.find(e);
         auto it_rev_fron = m_fron.find(e_rev);
-        
         // as we have not yet popped it off and dealt with it.
         if(it_rev_fron != m_fron.end()) {
             return;
@@ -65,15 +48,18 @@ public:
         // If is has been dealt with (e_rev) and
         // we attempt to add it again, we need to check this.
         // i.e does this edge exist in the graveyard?
-        auto it_dead = m_dead.find(e_rev);
-        if(it_dead != m_dead.end()) return;
+        auto it_rev_dead = m_dead.find(e_rev);
+        if(it_rev_dead != m_dead.end()) {
+            return;
+        }
         
-        // If the edge is not dead then we can continue;
+        // now we look for the edge.
+        auto it_fron = m_fron.find(e);
         if (it_fron == m_fron.end()) {
             m_fron.insert(e_rev);
         } else {
-            m_fron.erase(it_fron);
             m_dead.insert(*it_fron);
+            m_fron.erase(it_fron);
         }
     }
 
