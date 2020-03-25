@@ -24,12 +24,10 @@ public:
     }
 
     bool operator<(const edge<T, D>& e) const {
-        if (m_orig < e.m_orig) return false;
-        if (e.m_orig < m_orig) return true;
-        if (m_dest < e.m_dest)
-            return false;
-        else
+        if ((m_orig < e.m_orig) ||
+            ((m_orig == e.m_orig) && (m_dest < e.m_dest)))
             return true;
+        return false;
     }
 
     const vertex<T, D>& orig_ref() const { return m_orig; }

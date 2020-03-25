@@ -30,57 +30,73 @@ private:
 public:
     frontier() {}
 
-    void insert(const edge<T>& e) {
-        m_fron.insert(e);
-    }
-    
-    void update(const vertex<T>& a, const vertex<T>& b) {
+    void insert(const edge<T>& e) { m_fron.insert(e); }
+
+    bool update(const vertex<T>& a, const vertex<T>& b) {
         auto e = edge<T>{a, b};
         auto e_rev = edge<T>{b, a};
-        
+
         // If we find the reverse then we need to quit early...
         auto it_rev_fron = m_fron.find(e_rev);
-        // as we have not yet popped it off and dealt with it.
-        if(it_rev_fron != m_fron.end()) {
-            return;
+        // as we have not yet popped it off and processed it.
+        // If we continue, we are going to unnecc. add it (duplicate entries).
+        if (it_rev_fron != m_fron.end()) {
+            return false;
         }
-        
-        // If is has been dealt with (e_rev) and
-        // we attempt to add it again, we need to check this.
-        // i.e does this edge exist in the graveyard?
+
+        // If we have processed the edge then we need to check the graveyard.
+        // If it has been processed then it is in the graveyard.
+        // Remember an edge is considered dead if both it (e) and
+        // its reverse (e_rev) are in the graveyard.
+        // Since we place both in the graveyard we only need to search for
+        // the edge XOR its reverse.
         auto it_rev_dead = m_dead.find(e_rev);
-        if(it_rev_dead != m_dead.end()) {
-            return;
+        if (it_rev_dead != m_dead.end()) {
+            return false;
         }
-        
-        // now we look for the edge.
+
+        // Now we look for the edge.
         auto it_fron = m_fron.find(e);
         if (it_fron == m_fron.end()) {
+            // If we have not found the edge then it is to become live.
+            // That is, we add it's reverse. The reason for this is that
+            // immediately after the "update" call we add the triangle
+            // which has e as a face.
             m_fron.insert(e_rev);
+            return true;
         } else {
-            m_dead.insert(*it_fron);
+            // If we found the edge then we need to remove it from the
+            // frontier as it has already been dealt with and we should
+            // NOT add a triangle that has e as a face.
+            m_dead.insert(e);
+            m_dead.insert(e_rev);
             m_fron.erase(it_fron);
+            return false;
         }
     }
 
     auto pop_min() {
         auto min = *m_fron.begin();
+        auto min_rot = edge<T>(min.dest(), min.orig());
         m_dead.insert(min);
+        m_dead.insert(min_rot);
         m_fron.erase(m_fron.begin());
         return min;
     }
 
     bool empty() const { return m_fron.empty(); }
 
-    auto dump() const { return m_fron; }
-};
-
-template <typename T>
-void print(const frontier<T>& f) {
-    for (const auto& e : f.dump()) {
-        georhiau::core::print(e);
+    void print() const {
+        std::cout << "m_fron" << std::endl;
+        for (const auto& e : m_fron) {
+            georhiau::core::print(e);
+        }
+        std::cout << "m_dead" << std::endl;
+        for (const auto& e : m_dead) {
+            georhiau::core::print(e);
+        }
     }
-}
+};
 
 template <typename T>
 auto delaunay(std::vector<vertex<T>>& cloud) {
