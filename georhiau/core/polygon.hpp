@@ -24,10 +24,19 @@ public:
         return false;
     }
 
-    vertices dump_verts() { return m_vs; }
+    vertices dump_verts() const { return m_vs; }
 
 private:
     vertices m_vs;
 };
+
+template <typename T, std::size_t N>
+void print(const polygon<T, N>& p) {
+    auto verts = p.dump_verts();
+    for (const auto& v : verts) {
+        print(v);
+    }
+}
+
 }  // namespace core
 }  // namespace georhiau

@@ -10,8 +10,6 @@ enable_testing()
 
 include_directories(georhiau)
 
-add_executable(driver georhiau/driver/main.cpp)
-
 include(cmake/googletest.cmake)
 fetch_googletest(
     ${PROJECT_SOURCE_DIR}/cmake

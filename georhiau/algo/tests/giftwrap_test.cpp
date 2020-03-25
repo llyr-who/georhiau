@@ -4,7 +4,9 @@
 
 #include "gtest/gtest.h"
 
-TEST(giftwrap, smallest_vertex) {
+double pi() { return std::atan(1)*4; }
+
+TEST(giftwrap, smallest_vertex_simple) {
     using vertex = georhiau::core::vertex<double, 2>;
 
     vertex v1 = {1.0, 1.0};
@@ -15,7 +17,22 @@ TEST(giftwrap, smallest_vertex) {
     ASSERT_EQ(*georhiau::algo::smallest_vertex<double>(cloud), v1);
 }
 
-TEST(gitwrap, first_hull_edge) {
+TEST(giftwrap, smallest_vertex_circle) {
+    using vertex = georhiau::core::vertex<double, 2>;
+
+    std::vector<vertex> cloud;
+    
+    std::size_t N = 4;
+    for (std::size_t i = 0; i < N; ++i) {
+        double t = 2.0 * pi() * i * (1.0/static_cast<double>(N));
+        cloud.push_back(vertex{std::cos(t), std::sin(t)});
+    }
+    cloud.push_back(vertex{0.0, 0.0});
+
+    ASSERT_EQ(*georhiau::algo::smallest_vertex<double>(cloud), cloud[2]);
+}
+
+TEST(gitwrap, first_hull_edge_simple) {
     using vertex = georhiau::core::vertex<double, 2>;
     using edge = georhiau::core::edge<double, 2>;
 

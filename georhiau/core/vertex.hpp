@@ -45,8 +45,19 @@ public:
     }
 
     bool operator==(const vertex<T, D>& r) const {
-        return (std::fabs(m_c[0] - r.m_c[0]) < tol) &&
-               (std::fabs(m_c[1] - r.m_c[1]) < tol);
+        //std::cout << "is " << m_c[0] << " " << m_c[1] << std::endl;
+        //std::cout << "equal to " << r.m_c[0] << " " << r.m_c[1] << std::endl;
+
+        auto ans = (std::fabs(m_c[0] - r.m_c[0]) < tol) &&
+                   (std::fabs(m_c[1] - r.m_c[1]) < tol);
+        /*
+        if (ans) {
+            std::cout << "they  are" << std::endl;
+        } else {
+            std::cout << "they are not" << std::endl;
+        }
+        */
+        return ans;
     }
 
     vertex operator-(const vertex<T, D>& r) const {
