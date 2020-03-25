@@ -71,6 +71,12 @@ inline intersect_type_param<T, D> intersect(const edge<T, D>& e1,
 }
 
 template <typename T, std::size_t D>
+inline T length(const edge<T, D>& e) {
+    auto diff = e.dest() - e.orig();
+    return georhiau::core::norm(diff);
+}
+
+template <typename T, std::size_t D>
 inline edge<T, D> rotate(const edge<T, D>& e) {
     auto orig = e.orig();
     auto dest = e.dest();

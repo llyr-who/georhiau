@@ -60,6 +60,10 @@ auto mate2(const edge<T>& e, const std::vector<vertex<T>>& cloud) {
 
         //
         auto [type, t] = georhiau::core::intersect(e_rot, g);
+        if(t < 0.00001) {
+            std::cout << "someone is slipping through the net" << std::endl;
+            continue;
+        }
         //
         if (t < best_t) {
             best_p = pnt;
