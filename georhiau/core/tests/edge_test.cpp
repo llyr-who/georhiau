@@ -47,7 +47,7 @@ TEST(edge, less_than) {
 // whether std::find or CONTAINER.find(something) works on various C++
 // containers.
 
-TEST(edge, find) {
+TEST(edge, find_set) {
     vert_2d a = {1.0, 1.0};
     vert_2d b = {2.0, 1.0};
     vert_2d c = {1.0, 2.0};
@@ -63,5 +63,25 @@ TEST(edge, find) {
 
     auto it1 = s.find(e1);
     ASSERT_TRUE(it1 != s.end());
+}
+
+TEST(edge, pop_min_set) {
+    vert_2d a = {1.0, 1.0};
+    vert_2d b = {2.0, 1.0};
+    vert_2d c = {1.0, 2.0};
+
+    edge_2d e1(a, b);
+    edge_2d e2(b, c);
+    edge_2d e3(c, a);
+
+    std::set<edge_2d> s;
+    s.insert(e1);
+    s.insert(e2);
+    s.insert(e3);
+
+
+    s.erase(s.begin());
+    auto it1 = s.find(e1);
+    ASSERT_TRUE(it1 == s.end());
 }
 

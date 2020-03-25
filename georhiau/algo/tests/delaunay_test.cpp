@@ -68,4 +68,16 @@ TEST(delaunay, circle) {
     ASSERT_EQ(N + 1, cloud2.size());
     auto tris2 = georhiau::algo::delaunay(cloud2);
     ASSERT_EQ(N, tris2.size());
+
+    std::vector<vertex> cloud3;
+    N = 1000;
+    for (std::size_t i = 0; i < N; ++i) {
+        double t = 2.0 * pi() * i * (1.0 / static_cast<double>(N));
+        cloud3.push_back(vertex{std::cos(t), std::sin(t)});
+    }
+    cloud3.push_back(vertex{0.0, 0.0});
+
+    ASSERT_EQ(N + 1, cloud3.size());
+    auto tris3 = georhiau::algo::delaunay(cloud3);
+    ASSERT_EQ(N, tris3.size());
 }

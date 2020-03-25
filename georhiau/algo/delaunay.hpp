@@ -25,6 +25,12 @@ template <typename T>
 class frontier {
 private:
     std::set<edge<T>> m_fron;
+    std::set<edge<T>> m_dead;
+
+    void kill_edge(const typename std::set<edge<T>>::iterator& it) {
+        m_fron.erase(it);
+        m_dead.insert(*it);
+    }
 
 public:
     frontier() {}
@@ -34,33 +40,43 @@ public:
     bool update(const vertex<T>& a, const vertex<T>& b) {
         auto e = edge<T>{a, b};
         auto e_rev = edge<T>{b, a};
-        // Now we look for the edge.
-        auto it_fron = m_fron.find(e);
-        if (it_fron == m_fron.end()) {
-            // If we have not found the edge then it is to become live.
-            // That is, we add it's reverse. The reason for this is that
-            // immediately after the "update" call we add the triangle
-            // which has e as a face.
-            m_fron.insert(e_rev);
-            return true;
-        } else {
-            // If we found the edge then we need to remove it from the
-            // frontier as it has already been dealt with.
-            m_fron.erase(it_fron);
+
+        auto it_rev_dead = m_dead.find(e_rev);
+        auto it_dead = m_dead.find(e);
+        if (it_rev_dead != m_dead.end() || it_dead != m_dead.end()) {
             return false;
         }
+
+        auto it_rev_fron = m_fron.find(e_rev);
+        if (it_rev_fron != m_fron.end()) {
+            return false;
+        }
+
+        auto it_fron = m_fron.find(e);
+        if (it_fron == m_fron.end()) {
+            m_fron.insert(e_rev);
+            return true;
+        }
+
+        kill_edge(it_fron);
+        return false;
     }
 
     auto pop_min() {
         auto min = *m_fron.begin();
-        m_fron.erase(m_fron.begin());
+        kill_edge(m_fron.begin());
         return min;
     }
 
     bool empty() const { return m_fron.empty(); }
 
     void print() const {
+        std::cout << "m_fron" << std::endl;
         for (const auto& e : m_fron) {
+            georhiau::core::print(e);
+        }
+        std::cout << "m_dead" << std::endl;
+        for (const auto& e : m_dead) {
             georhiau::core::print(e);
         }
     }
@@ -72,12 +88,38 @@ auto delaunay(std::vector<vertex<T>>& cloud) {
     frontier<T> f;
     auto e = georhiau::algo::first_hull_edge<T>(cloud);
     f.insert(e);
+    int I = 0;
     while (!f.empty()) {
         auto e = f.pop_min();
         auto p = mate2(e, cloud);
         if (p == cloud.end()) continue;
-        f.update(*p, e.orig());
-        f.update(e.dest(), *p);
+        std::cout << "----------------" << std::endl;
+        std::cout << "edge under consideration" << std::endl;
+        georhiau::core::print(e);
+        std::cout << "and point " << std::endl;
+        georhiau::core::print(*p);
+        std::cout << std::endl;
+
+        bool face1 = f.update(*p, e.orig());
+        std::cout << "--------------" << std::endl;
+        std::cout << "first edge" << std::endl;
+        edge<T> e1(*p, e.orig());
+        georhiau::core::print(e1);
+        if(georhiau::core::length(e1) > 1.0) {
+            std::cout << "FUCKING HELLL" << std::endl;
+        }
+        std::cout << "--------------" << std::endl;
+
+        bool face2 = f.update(e.dest(), *p);
+        std::cout << "--------------" << std::endl;
+        std::cout << "second edge" << std::endl;
+        edge<T> e2(e.dest(), *p);
+        georhiau::core::print(e2);
+        if(georhiau::core::length(e2) > 1.0) {
+            std::cout << "FUCKING HELLL" << std::endl;
+        }
+        std::cout << "--------------" << std::endl;
+        if (!face1 && !face2) continue;
         triangles.push_back(triangle<T>{e.orig_ref(), e.dest_ref(), *p});
     }
     return triangles;
