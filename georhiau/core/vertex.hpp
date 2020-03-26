@@ -75,6 +75,11 @@ private:
 };
 
 template <typename T, std::size_t D>
+inline T cross(const vertex<T, D>& v1, const vertex<T,D>& v2) {
+    return v1[0] * v2[1] - v1[1] * v2[0];
+}
+
+template <typename T, std::size_t D>
 inline void print(const vertex<T, D>& p) {
     std::cout << std::endl;
     for (const auto& d : p.data()) {

@@ -1,10 +1,11 @@
 #include "core/polygon.hpp"
+#include "core/triangle.hpp"
 
 #include "gtest/gtest.h"
 
 template <std::size_t N>
 using polygon = georhiau::core::polygon<double, N>;
-
+using triangle = georhiau::core::triangle<double>;
 using vertex = georhiau::core::vertex<double, 2>;
 
 TEST(polygon, construction) {
@@ -22,4 +23,16 @@ TEST(polygon, construction) {
     // are they equal ?
     // If yes then our constructor works :)
     ASSERT_TRUE(vs == va);
+}
+
+TEST(polygon, area)
+{
+
+    const vertex a = {1.0, 1.0};
+    const vertex b = {1.0, 2.0};
+    const vertex c = {2.0, 2.0};
+    
+    triangle t = {a,b,c};
+
+    ASSERT_EQ(georhiau::core::area(t), 0.5);
 }

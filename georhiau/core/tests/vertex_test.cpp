@@ -19,6 +19,13 @@ TEST(vertex, multiply_by_const) {
     ASSERT_EQ(act_result, exp_result);
 }
 
+TEST(vertex, cross_product) {
+    vertex_2d a = {1.0, 1.0};
+    vertex_2d b = {3.0, 2.0};
+
+    ASSERT_EQ(-1.0, georhiau::core::cross(a,b));
+}
+
 TEST(vertex, classify) {
     vertex_2d a = {1.0, 1.0};
     vertex_2d b = {2.0, 2.0};
