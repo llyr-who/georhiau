@@ -57,8 +57,9 @@ inline intersect_type_param<T, D> intersect(const edge<T, D>& e1,
     auto cd_data = (d - c).data();
     vertex<T, D> n = {1.0 * cd_data[1], -1.0 * cd_data[0]};
     auto proj = n * (b - a);
-    // if proj is zero then (a,b) and (c,d) are parallel. (or even colinear)
-    if (std::abs(proj) <= std::numeric_limits<T>::min()) {
+    // If proj is zero then (a,b) and (c,d) are parallel. (or even colinear)
+    // Note the magic number here.
+    if (std::abs(proj) <= 10e-15) {
         auto point_class = classify(e2.orig(), e2.dest(), e1.orig());
         if ((point_class == vertex<T, D>::orientation::Left) ||
             (point_class == vertex<T, D>::orientation::Right)) {

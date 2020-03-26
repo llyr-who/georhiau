@@ -58,10 +58,10 @@ auto mate2(const edge<T>& e, const std::vector<vertex<T>>& cloud) {
         }
         edge<T> g = rotate(edge<T>{e.dest(), *pnt});
 
-        //
+        // we don't want a mate that is parallel or colinear
         auto [type, t] = georhiau::core::intersect(e_rot, g);
-        if(t < 0.00001) {
-            std::cout << "someone is slipping through the net" << std::endl;
+        if (type == edge<T>::intersection::Parallel ||
+            type == edge<T>::intersection::Colinear) {
             continue;
         }
         //

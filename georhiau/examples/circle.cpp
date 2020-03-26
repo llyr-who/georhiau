@@ -10,7 +10,7 @@ double pi() { return std::atan(1)*4; }
 int main() {
     std::vector<vertex> cloud;
 
-    std::size_t N = 1000;
+    std::size_t N = 10;
     for (std::size_t i = 0; i < N; ++i) {
         double t = 2.0 * pi() * i * (1.0/static_cast<double>(N));
         cloud.push_back(vertex{std::cos(t), std::sin(t)});
@@ -25,13 +25,15 @@ int main() {
     std::cout << tris.size() << std::endl;
 
     int i = 0;
-    /*
+    double area = 0.0;
     for(const auto& t : tris) {
         std::cout << "triangle " << i++ << std::endl;
         georhiau::core::print(t);
+        area += georhiau::core::area(t);
         std::cout <<  std::endl;
         std::cout << "---------" <<  std::endl;
     }
-    */
 
+    std::cout << "total area: " << area << std::endl;
+    std::cout << "expected area: " << 2.0 * pi() << std::endl;
 }
