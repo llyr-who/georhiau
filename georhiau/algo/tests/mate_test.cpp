@@ -28,7 +28,6 @@ TEST(mate, basic) {
     ASSERT_EQ(*r1, *r2);
 }
 
-// found a case in debuggind delauney
 TEST(mate, single_triangle) {
     // create triangle point cloud
     vertex a = {0.0, 0.0};

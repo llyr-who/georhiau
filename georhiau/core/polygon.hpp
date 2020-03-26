@@ -1,3 +1,5 @@
+#pragma once 
+#include <iterator>
 #include <set>
 
 #include "core/vertex.hpp"
@@ -8,6 +10,10 @@ template <typename T, std::size_t N>
 class polygon {
 public:
     using vertex = georhiau::core::vertex<T, 2>;
+    // We use a set since {v1,v2,v3} == {v3,v2,v1}
+    // vectors cry about order. We could add them to a
+    // vector and then sort.
+    // Some bench marking would be useful.
     using vertices = std::set<vertex>;
 
     template <typename... Ts,
@@ -22,6 +28,10 @@ public:
     bool operator==(const polygon<T, N>& p) const {
         if (p.m_vs == m_vs) return true;
         return false;
+    }
+
+    vertex operator[](std::size_t i) const {
+        return *std::next(m_vs.begin(), i);
     }
 
     vertices dump_verts() const { return m_vs; }

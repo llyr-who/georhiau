@@ -45,18 +45,8 @@ public:
     }
 
     bool operator==(const vertex<T, D>& r) const {
-        //std::cout << "is " << m_c[0] << " " << m_c[1] << std::endl;
-        //std::cout << "equal to " << r.m_c[0] << " " << r.m_c[1] << std::endl;
-
         auto ans = (std::fabs(m_c[0] - r.m_c[0]) < tol) &&
                    (std::fabs(m_c[1] - r.m_c[1]) < tol);
-        /*
-        if (ans) {
-            std::cout << "they  are" << std::endl;
-        } else {
-            std::cout << "they are not" << std::endl;
-        }
-        */
         return ans;
     }
 
@@ -83,6 +73,11 @@ public:
 private:
     std::array<T, D> m_c;
 };
+
+template <typename T, std::size_t D>
+inline T cross(const vertex<T, D>& v1, const vertex<T,D>& v2) {
+    return v1[0] * v2[1] - v1[1] * v2[0];
+}
 
 template <typename T, std::size_t D>
 inline void print(const vertex<T, D>& p) {

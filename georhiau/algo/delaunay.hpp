@@ -93,32 +93,8 @@ auto delaunay(std::vector<vertex<T>>& cloud) {
         auto e = f.pop_min();
         auto p = mate2(e, cloud);
         if (p == cloud.end()) continue;
-        std::cout << "----------------" << std::endl;
-        std::cout << "edge under consideration" << std::endl;
-        georhiau::core::print(e);
-        std::cout << "and point " << std::endl;
-        georhiau::core::print(*p);
-        std::cout << std::endl;
-
         bool face1 = f.update(*p, e.orig());
-        std::cout << "--------------" << std::endl;
-        std::cout << "first edge" << std::endl;
-        edge<T> e1(*p, e.orig());
-        georhiau::core::print(e1);
-        if(georhiau::core::length(e1) > 1.0) {
-            std::cout << "FUCKING HELLL" << std::endl;
-        }
-        std::cout << "--------------" << std::endl;
-
         bool face2 = f.update(e.dest(), *p);
-        std::cout << "--------------" << std::endl;
-        std::cout << "second edge" << std::endl;
-        edge<T> e2(e.dest(), *p);
-        georhiau::core::print(e2);
-        if(georhiau::core::length(e2) > 1.0) {
-            std::cout << "FUCKING HELLL" << std::endl;
-        }
-        std::cout << "--------------" << std::endl;
         if (!face1 && !face2) continue;
         triangles.push_back(triangle<T>{e.orig_ref(), e.dest_ref(), *p});
     }

@@ -18,7 +18,7 @@ TEST(edge, rotate) {
     ASSERT_EQ(e_rot, e_rot_exp);
 }
 
-TEST(edge, intersect) {
+TEST(edge, intersect_basic) {
     vert_2d a = {1.0, 1.0};
     vert_2d b = {1.0, 3.0};
     edge_2d e1(a, b);
@@ -43,10 +43,9 @@ TEST(edge, less_than) {
     ASSERT_TRUE(e2 < e1);
 }
 
-// After multiple failures on other tests and examples, we need to check
-// whether std::find or CONTAINER.find(something) works on various C++
-// containers.
-
+// This test essentially tests the implementation of
+// the < operator and shows that it behaves as we
+// expect it to.
 TEST(edge, find_set) {
     vert_2d a = {1.0, 1.0};
     vert_2d b = {2.0, 1.0};
@@ -65,6 +64,7 @@ TEST(edge, find_set) {
     ASSERT_TRUE(it1 != s.end());
 }
 
+// similar to above.
 TEST(edge, pop_min_set) {
     vert_2d a = {1.0, 1.0};
     vert_2d b = {2.0, 1.0};
@@ -79,9 +79,34 @@ TEST(edge, pop_min_set) {
     s.insert(e2);
     s.insert(e3);
 
-
     s.erase(s.begin());
     auto it1 = s.find(e1);
     ASSERT_TRUE(it1 == s.end());
+}
+
+double pi() { return std::atan(1) * 4; }
+
+// this test highlights that we need to get dirty with
+// magic numbers in "intersect"
+TEST(edge, intersect_bug) {
+    std::vector<vert_2d> cloud;
+
+    std::size_t N = 10;
+    for (std::size_t i = 0; i < N; ++i) {
+        double t = 2.0 * pi() * i * (1.0 / static_cast<double>(N));
+        cloud.push_back(vert_2d{std::cos(t), std::sin(t)});
+    }
+
+    auto centre = vert_2d{0.0, 0.0};
+
+    for (std::size_t i = 0; i < 5; ++i) {
+        auto p = cloud[i];
+        auto ap = cloud[i + 5];
+        auto e1 = edge_2d(centre, p);
+        auto e2 = edge_2d(centre, ap);
+        georhiau::core::print(e1);
+        georhiau::core::print(e2);
+        ASSERT_EQ(intersect(e1, e2).first, edge_2d::intersection::Colinear);
+    }
 }
 
