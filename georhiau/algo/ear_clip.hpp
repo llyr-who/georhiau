@@ -1,4 +1,7 @@
-#include "georhiau/core/triangle.hpp"
+#include "core/triangle.hpp"
+#include "core/cdl_list.hpp"
+
+#include <list>
 
 namespace georhiau {
 namespace algo {
@@ -7,32 +10,19 @@ template <typename T>
 using triangle = georhiau::core::triangle<T>;
 
 template <typename T>
-auto ear_clip(std::vector<vertex<T>> a) {
-    for (size_t t = a.size() - 1, i = 0, j = 1; i < a.size();
-         t = i++, j = (i + 1) % a.size()) {
-        if (a.size() == 3) {
-            triangle t = {a[0], a[1], a[2]};
-            mTriangles.push_back(t);
-            break;
-        }
-        
-        // is the ith vertex of a an ear?
-        if (isEar(i, a)) {
-            T.x = a[t].VertexNumber;
-            T.y = a[i].VertexNumber;
-            T.z = a[j].VertexNumber;
+using vertex = georhiau::core::vertex<T, 2>;
 
-            // here we have the diagonals
-            Edge d(a[j].VertexNumber, a[t].VertexNumber, 0);
-            mEdges.push_back(d);
-            mTriangles.push_back(T);
-            a.erase(a.begin() + i, a.begin() + i + 1);
-            t = a.size() - 1;
-            i = 0;
-            j = 1;
-        }
+template <typename T, std::size_t D>
+auto ear_clip(const georhiau::core::polygon<T, D>& p) {
+    // dump verts and put them in a cdl list 
+    auto verts = p.dump_verts();
+    georhiau::core::cdl_list<vertex<T>> a;
+    for(const auto& p : verts) {
+        //a.insert(p);
     }
+    return 1;
 }
+
 }  // namespace algo
 }  // namespace georhiau
 

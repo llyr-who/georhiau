@@ -18,6 +18,15 @@ public:
 
     template <typename... Ts,
               typename std::enable_if<
+                  std::conjunction<std::is_same<vertex&, Ts>...>::value &&
+                      (sizeof...(Ts) == N),
+                  int>::type = 0>
+    polygon(Ts&&... verts) {
+        m_vs = std::set<vertex>{std::forward<Ts>(verts)...};
+    }
+
+    template <typename... Ts,
+              typename std::enable_if<
                   std::conjunction<std::is_same<const vertex&, Ts>...>::value &&
                       (sizeof...(Ts) == N),
                   int>::type = 0>
