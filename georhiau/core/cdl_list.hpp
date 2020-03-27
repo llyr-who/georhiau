@@ -22,8 +22,8 @@ public:
         type data;      //!< points to the data contained at the current node
     };
 
-    int count;      //!< number of elements in the Dlist
-    cdlNode *root;  //!< sentinel root node of Dlist
+    std::size_t count;  //!< number of elements in the Dlist
+    cdlNode *root;      //!< sentinel root node of Dlist
     friend class iterator;
 
     //! \class iterator
@@ -103,6 +103,20 @@ public:
     // Get iterator to end of list
     iterator end() { return (iterator(root)); }
 
+
+    // TODO: CLEAN THIS UP.
+    // next, prev are some dirty functions because this cll uses sentinal nodes
+    iterator next(iterator &it) {
+        if (it->next == root) return it->next->next;
+        return it->next;
+    }
+
+    iterator prev(iterator &it) {
+        if (it->prev == root) return it->prev->prev;
+        return it->prev;
+    }
+
+
     // Constructor malloc's root node and sets it circular
     cdl_list();
 
@@ -115,11 +129,14 @@ public:
     // Clear cdl_list
     void clear();
 
+    // size of cll
+    std::size_t size() { return count; }
+
     // Check if cdl_list is empty
     bool empty();
 
     // Insert a node containing data BEFORE the iterator
-    void insert_before(iterator &itr, type &in_data);
+    void insert_before(iterator &itr, const type &in_data);
 
     // Insert a node containing data AFTER the iterator
     void insert_after(iterator &itr, type &in_data);
@@ -128,7 +145,7 @@ public:
     void erase(iterator &itr);
 
     // Add a node containing data to the back of list
-    void push_back(type &data);
+    void push_back(const type &data);
 
     // Add a node containing data to the front of list
     void push_front(type &data);
@@ -208,7 +225,7 @@ void cdl_list<type>::clear() {
  *
  */
 template <class type>
-void cdl_list<type>::insert_before(iterator &itr, type &in_data) {
+void cdl_list<type>::insert_before(iterator &itr, const type &in_data) {
     cdl_list::cdlNode *tmp =
         new cdlNode(in_data, itr.itr_node, itr.itr_node->prev);
 
@@ -265,7 +282,7 @@ void cdl_list<type>::insert_after(iterator &itr, type &in_data) {
  *
  */
 template <class type>
-void cdl_list<type>::push_back(type &data) {
+void cdl_list<type>::push_back(const type &data) {
     cdl_list::iterator itr_end = end();
     insert_before(itr_end, data);
 
