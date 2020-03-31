@@ -6,9 +6,9 @@
 using vertex = georhiau::core::vertex<double, 2>;
 
 TEST(delaunay, single_element_mesh) {
-    const vertex a = {0.0, 0.0};
-    const vertex b = {2.0, 0.0};
-    const vertex c = {2.0, 2.0};
+    vertex a = {0.0, 0.0};
+    vertex b = {2.0, 0.0};
+    vertex c = {2.0, 2.0};
 
     std::vector<vertex> cloud = {a, b, c};
 
@@ -21,10 +21,10 @@ TEST(delaunay, single_element_mesh) {
 }
 
 TEST(delaunay, square) {
-    const vertex a = {0.0, 0.0};
-    const vertex b = {2.0, 0.0};
-    const vertex c = {2.0, 2.0};
-    const vertex d = {0.0, 2.0};
+    vertex a = {0.0, 0.0};
+    vertex b = {2.0, 0.0};
+    vertex c = {2.0, 2.0};
+    vertex d = {0.0, 2.0};
 
     std::vector<vertex> cloud = {a, b, c, d};
 

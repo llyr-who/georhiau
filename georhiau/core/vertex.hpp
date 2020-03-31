@@ -75,7 +75,7 @@ private:
 };
 
 template <typename T, std::size_t D>
-inline T cross(const vertex<T, D>& v1, const vertex<T,D>& v2) {
+inline T cross(const vertex<T, D>& v1, const vertex<T, D>& v2) {
     return v1[0] * v2[1] - v1[1] * v2[0];
 }
 
@@ -105,10 +105,11 @@ inline typename vertex<T, D>::orientation classify(const vertex<T, D>& p0,
     auto b = p2 - p0;
 
     // z component of cross product.
-    T c_p_z = a[0] * b[1] - b[0] * a[1];
+    T c_p_z = cross(a, b);
     // The sign will indicate whether the point p2
     // is to the right or the left of the line
     // segment defined by p0 and p1.
+    //
     if (c_p_z > 0.0) return vertex<T, D>::orientation::Left;
     if (c_p_z < 0.0) return vertex<T, D>::orientation::Right;
     // If we have not returned yet then

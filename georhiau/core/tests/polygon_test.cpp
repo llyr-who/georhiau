@@ -9,9 +9,9 @@ using triangle = georhiau::core::triangle<double>;
 using vertex = georhiau::core::vertex<double, 2>;
 
 TEST(polygon, construction) {
-    const vertex a = {1.0, 1.0};
-    const vertex b = {1.0, 2.0};
-    const vertex c = {2.0, 2.0};
+    vertex a = {1.0, 1.0};
+    vertex b = {1.0, 2.0};
+    vertex c = {2.0, 2.0};
 
     // generate polygon
     polygon<3> pol = {a, b, c};
@@ -27,10 +27,9 @@ TEST(polygon, construction) {
 
 TEST(polygon, area)
 {
-
-    const vertex a = {1.0, 1.0};
-    const vertex b = {1.0, 2.0};
-    const vertex c = {2.0, 2.0};
+    vertex a = {1.0, 1.0};
+    vertex b = {1.0, 2.0};
+    vertex c = {2.0, 2.0};
     
     triangle t = {a,b,c};
 

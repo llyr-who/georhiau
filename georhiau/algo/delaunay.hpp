@@ -62,7 +62,7 @@ public:
         return false;
     }
 
-    auto pop_min() {
+    edge<T> pop_min() {
         auto min = *m_fron.begin();
         kill_edge(m_fron.begin());
         return min;
@@ -83,7 +83,7 @@ public:
 };
 
 template <typename T>
-auto delaunay(std::vector<vertex<T>>& cloud) {
+auto delaunay(std::vector<vertex<T>> cloud) {
     std::list<triangle<T>> triangles;
     frontier<T> f;
     auto e = georhiau::algo::first_hull_edge<T>(cloud);
@@ -96,7 +96,7 @@ auto delaunay(std::vector<vertex<T>>& cloud) {
         bool face1 = f.update(*p, e.orig());
         bool face2 = f.update(e.dest(), *p);
         if (!face1 && !face2) continue;
-        triangles.push_back(triangle<T>{e.orig_ref(), e.dest_ref(), *p});
+        triangles.push_back(triangle<T>(e.orig_ref(), e.dest_ref(), *p));
     }
     return triangles;
 }
