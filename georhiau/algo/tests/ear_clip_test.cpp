@@ -31,7 +31,16 @@ TEST(ear_clip, basic) {
     vertex a = {0.0, 0.0};
     vertex b = {1.0, 0.0};
     vertex c = {1.0, 1.0};
-    polygon<3> p(a, b, c);
+    vertex d = {0.0, 1.0};
+    polygon<4> p(a, b, c, d);
 
-    georhiau::algo::ear_clip(p);
+    auto tris = georhiau::algo::ear_clip(p);
+
+    ASSERT_EQ(tris.size(), 2);
+
+    std::cout << "DEBUG" << std::endl;
+    for(const auto& t : tris) {
+        std::cout << " ----- " << std::endl;
+        georhiau::core::print(t);
+    }
 }

@@ -75,6 +75,8 @@ bool ear(vertex_list::iterator& ear, vertex_list& vl) {
 
 template <std::size_t D>
 auto ear_clip(const polygon<D>& p) {
+    std::list<triangle> tris;
+
     // dump verts and put them in a cdl list
     auto verts = p.dump_verts();
     vertex_list vert_list;
@@ -90,14 +92,17 @@ auto ear_clip(const polygon<D>& p) {
         auto b = v->data;
         auto c = vert_list.next(v)->data;
 
-        if (!convex(a, b, c)) continue;
-        if (!ear(v, vert_list)) continue;
+        //if (!convex(a, b, c)) continue;
+        //if (!ear(v, vert_list)) continue;
+
         // now we can handle the ear
+        tris.push_back(triangle{a, b, c});
         vert_list.erase(v);
         if ((v).itr_node == vert_list.root) ++v;
     }
-    return 1;
-}
+
+    return tris;
+}  // namespace algo
 
 }  // namespace algo
 }  // namespace georhiau
