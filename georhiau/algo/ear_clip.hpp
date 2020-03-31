@@ -52,7 +52,23 @@ bool inside_triangle(const vertex& p, const vertex& t_a, const vertex& t_b,
 // of the circ. linked list that we have used. This is quite bad
 // design and needs to change
 
-bool ear(vertex_list::iterator& it, const vert_list& vl) { return true; }
+bool ear(vertex_list::iterator& ear, const vert_list& vl) {
+    auto c = vl.next(vertex_list.next(ear));
+    auto before_ear = vl.prev(ear);
+
+    auto a = vert_list.prev(ear)->data;
+    auto b = ear->data;
+    auto c = vert_list.next(ear)->data;
+
+    while (c != before_ear) {
+        if (inside_triangle(c->data, a, b, c)) {
+            return false;
+        }
+        c = vl.next(c);
+    }
+
+    return true;
+}
 
 template <std::size_t D>
 auto ear_clip(const polygon<D>& p) {
@@ -69,7 +85,7 @@ auto ear_clip(const polygon<D>& p) {
     while (vert_list.size() > 2) {
         ++v;
         auto a = vert_list.prev(v)->data;
-        auto b = vert_list->data;
+        auto b = v->data;
         auto c = vert_list.next(v)->data;
 
         if (!convex(a, b, c)) continue;
