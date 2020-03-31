@@ -32,15 +32,24 @@ TEST(ear_clip, basic) {
     vertex b = {1.0, 0.0};
     vertex c = {1.0, 1.0};
     vertex d = {0.0, 1.0};
-    polygon<4> p(a, b, c, d);
+    std::vector<vertex> p = {a, b, c, d};
 
     auto tris = georhiau::algo::ear_clip(p);
 
     ASSERT_EQ(tris.size(), 2);
+}
 
-    std::cout << "DEBUG" << std::endl;
-    for(const auto& t : tris) {
-        std::cout << " ----- " << std::endl;
-        georhiau::core::print(t);
+double pi() { return std::atan(1) * 4; }
+
+TEST(ear_clip, hexagon) {
+    
+    std::vector<vertex> cloud;
+    std::size_t N = 6;
+    for (std::size_t i = 0; i < N; ++i) {
+        double t = 2.0 * pi() * i * (1.0 / static_cast<double>(N));
+        cloud.push_back(vertex{std::cos(t), std::sin(t)});
     }
+
+    auto tris = georhiau::algo::ear_clip(cloud);
+    ASSERT_EQ(tris.size(), 4);
 }

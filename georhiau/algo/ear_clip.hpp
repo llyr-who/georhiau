@@ -3,6 +3,7 @@
 #include "core/triangle.hpp"
 
 #include <list>
+#include <vector>
 
 namespace georhiau {
 namespace algo {
@@ -10,9 +11,6 @@ namespace algo {
 using triangle = georhiau::core::triangle<double>;
 using vertex = georhiau::core::vertex<double, 2>;
 using vertex_list = georhiau::core::cdl_list<vertex>;
-
-template <std::size_t D>
-using polygon = georhiau::core::polygon<double, D>;
 
 // this routine can probably be pulled out of here.
 bool convex(const vertex& a, const vertex& b, const vertex& c) {
@@ -73,12 +71,9 @@ bool ear(vertex_list::iterator& ear, vertex_list& vl) {
     return true;
 }
 
-template <std::size_t D>
-auto ear_clip(const polygon<D>& p) {
+auto ear_clip(const std::vector<vertex>& verts) {
     std::list<triangle> tris;
-
     // dump verts and put them in a cdl list
-    auto verts = p.dump_verts();
     vertex_list vert_list;
     for (const auto& p : verts) {
         vert_list.push_back(p);
@@ -87,18 +82,18 @@ auto ear_clip(const polygon<D>& p) {
     auto v = vert_list.end();
 
     while (vert_list.size() > 2) {
-        ++v;
+        if ((v).itr_node == vert_list.root) ++v;
         auto a = vert_list.prev(v)->data;
         auto b = v->data;
         auto c = vert_list.next(v)->data;
 
-        //if (!convex(a, b, c)) continue;
-        //if (!ear(v, vert_list)) continue;
+        if (!convex(a, b, c)) continue;
+        if (!ear(v, vert_list)) continue;
 
         // now we can handle the ear
         tris.push_back(triangle{a, b, c});
         vert_list.erase(v);
-        if ((v).itr_node == vert_list.root) ++v;
+        ++v;
     }
 
     return tris;
