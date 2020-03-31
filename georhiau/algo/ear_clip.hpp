@@ -1,3 +1,4 @@
+
 #include "core/cdl_list.hpp"
 #include "core/triangle.hpp"
 
@@ -9,6 +10,7 @@ namespace algo {
 using triangle = georhiau::core::triangle<double>;
 using vertex = georhiau::core::vertex<double, 2>;
 using vertex_list = georhiau::core::cdl_list<vertex>;
+
 template <std::size_t D>
 using polygon = georhiau::core::polygon<double, D>;
 
@@ -80,7 +82,6 @@ auto ear_clip(const polygon<D>& p) {
         vert_list.push_back(p);
     }
 
-    std::cout << vert_list.size() << std::endl;
     auto v = vert_list.end();
 
     while (vert_list.size() > 2) {
