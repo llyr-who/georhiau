@@ -52,19 +52,20 @@ bool inside_triangle(const vertex& p, const vertex& t_a, const vertex& t_b,
 // of the circ. linked list that we have used. This is quite bad
 // design and needs to change
 
-bool ear(vertex_list::iterator& ear, const vert_list& vl) {
-    auto c = vl.next(vertex_list.next(ear));
+bool ear(vertex_list::iterator& ear, vertex_list& vl) {
+    auto ear_next = vl.next(ear);
+    auto curr = vl.next(ear_next);
     auto before_ear = vl.prev(ear);
 
-    auto a = vert_list.prev(ear)->data;
+    auto a = vl.prev(ear)->data;
     auto b = ear->data;
-    auto c = vert_list.next(ear)->data;
+    auto c = vl.next(ear)->data;
 
-    while (c != before_ear) {
-        if (inside_triangle(c->data, a, b, c)) {
+    while (curr != before_ear) {
+        if (inside_triangle(curr->data, a, b, c)) {
             return false;
         }
-        c = vl.next(c);
+        curr = vl.next(curr);
     }
 
     return true;
