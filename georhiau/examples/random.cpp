@@ -1,10 +1,15 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <limits>
 #include <list>
 #include <random>
 
 #include "algo/delaunay.hpp"
 #include "core/triangle.hpp"
+
+// THESE WILL BECOME PRIVATE MEMBER VARS
+static int w = 0;
+static int h = 0;
 
 static void error_callback(int error, const char* description) {
     fprintf(stderr, "Error: %s\n", description);
@@ -16,36 +21,33 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action,
         glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
-void grid(int w, int h) {
-    int W = w / 10;
-    int H = h / 10;
+// returns scaling factors for glOrtho
+auto get_scaling_factors(std::list<georhiau::core::triangle<double>>& tris) {
+    auto max_w = 0.0;
+    auto max_h = 0.0;
 
-    for (float i = 0; i < W; i++) {
-        glBegin(GL_LINES);
-        glColor3f(0.9f, 0.9f, 0.9f);
-        glVertex2f((i * 10), 0.f);
-        glVertex2f((i * 10), 1.0f * w);
-        glEnd();
+    for (const auto& t : tris) {
+        for (std::size_t i = 0; i < 3; ++i) {
+            if (t[i][0] > max_w) max_w = t[i][0];
+            if (t[i][1] > max_h) max_h = t[i][1];
+        }
     }
-
-    for (float i = 0; i < H; i++) {
-        glBegin(GL_LINES);
-        glColor3f(0.9f, 0.9f, 0.9f);
-        glVertex2f(0.f, (i * 10));
-        glVertex2f(1.0f * h, (i * 10));
-        glEnd();
-    }
-
-    glBegin(GL_LINES);
-    glColor3f(0.2f, 0.2f, 0.2f);
-    glVertex2f(0.f, 0.f);
-    glVertex2f(0.f, 1.0f * h);
-    glVertex2f(0.f, 0.f);
-    glVertex2f(1.0f * w, 0.f);
-    glEnd();
+    return std::make_pair(max_w / w, max_h / h);
 }
 
 void draw_triangles(std::list<georhiau::core::triangle<double>>& tris) {
+    glViewport(0, 0, w, h);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    auto factors = get_scaling_factors(tris);
+
+    glOrtho(0.0f, w * factors.first, 0.0f, h * factors.second, 0.f, 1.0f);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
     for (const auto& t : tris) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glBegin(GL_TRIANGLES);
@@ -63,11 +65,6 @@ bool run(GLFWwindow* window,
         glClearColor(0.98f, 0.98f, 0.98f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // DRAW STUFF
-        int w, h;
-        glfwGetFramebufferSize(window, &w, &h);
-        grid(w, h);
-
         draw_triangles(tris);
 
         glfwSwapBuffers(window);
@@ -84,25 +81,32 @@ auto exit(GLFWwindow* window) {
     glfwTerminate();
 }
 
-auto get_window(int w, int h, const char* title) {
+auto resolution() {
+    const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    return std::make_pair(mode->width, mode->height);
+}
+
+auto get_window() {
+    // Set error callback, just in case we encounter
+    // any errors before/during window creation and
+    // glfw initialisation.
     glfwSetErrorCallback(error_callback);
     glfwInit();
-    auto window = glfwCreateWindow(w, h, title, nullptr, nullptr);
+
+    // Obtain monitor resolution.
+    auto res = resolution();
+    // We want to take up one quarter of screen space
+    // and we want the plot to be square
+    w = res.first / 4;
+    h = res.first / 4;
+
+    auto window = glfwCreateWindow(w, h, "GeoRhiau", nullptr, nullptr);
     if (!window) {
         return window;
     }
 
     glfwSetKeyCallback(window, key_callback);
     glfwMakeContextCurrent(window);
-
-    glViewport(0, 0, w, h);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, w, 0, h, 0.f, 100.f);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -113,7 +117,7 @@ auto get_window(int w, int h, const char* title) {
 }
 
 auto plot(std::list<georhiau::core::triangle<double>>& tris) {
-    auto window = get_window(1000, 1000, "Delaunay vs. Ear-Clipping");
+    auto window = get_window();
     if (window) {
         auto finished = run(window, tris);
     }
@@ -125,7 +129,9 @@ int main() {
 
     std::random_device dev;
     std::mt19937 rng(dev());
-    std::uniform_real_distribution<> dist(0.1, 999.9);
+
+    // generate points between 0 and 10.
+    std::uniform_real_distribution<> dist(0.1, 9.9);
 
     std::vector<vtx> cloud;
 
@@ -137,7 +143,5 @@ int main() {
     auto tris = georhiau::algo::delaunay(cloud);
 
     plot(tris);
-
-    std::cout << "hello" << std::endl;
 }
 
