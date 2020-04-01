@@ -27,7 +27,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action,
 }
 
 // returns scaling factors for glOrtho
-auto get_scaling_factors(std::list<georhiau::core::triangle<double>>& tris) {
+auto projection_params(std::list<georhiau::core::triangle<double>>& tris) {
     auto max_w = 0.0;
     auto max_h = 0.0;
 
@@ -37,7 +37,7 @@ auto get_scaling_factors(std::list<georhiau::core::triangle<double>>& tris) {
             if (t[i][1] > max_h) max_h = t[i][1];
         }
     }
-    return std::make_pair(max_w / w, max_h / h);
+    return std::make_pair(max_w, max_h);
 }
 
 void draw_triangles(std::list<georhiau::core::triangle<double>>& tris) {
@@ -46,9 +46,10 @@ void draw_triangles(std::list<georhiau::core::triangle<double>>& tris) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    auto factors = get_scaling_factors(tris);
+    auto params = projection_params(tris);
 
-    glOrtho(0.0f, w * factors.first, 0.0f, h * factors.second, 0.f, 1.0f);
+    glOrtho(0.0f, params.first * (1.01), 0.0f, params.second * (1.01), 0.f,
+            1.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

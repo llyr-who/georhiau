@@ -1,6 +1,5 @@
 #include "view/plot.hpp"
 
-
 int main() {
     using vtx = georhiau::core::vertex<double, 2>;
 
@@ -19,7 +18,6 @@ int main() {
 
     auto tris = georhiau::algo::delaunay(cloud);
 
-    // generate two plots then show
     georhiau::view::plot(tris);
 }
 
