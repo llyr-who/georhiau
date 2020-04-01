@@ -9,6 +9,20 @@
 #include "algo/delaunay.hpp"
 #include "core/triangle.hpp"
 
+// we are using the dreadfull old OpenGl ways.
+// That is, we are not using vertex array buffers.
+// The main reason behind this is that I can not
+// decide on a extension loading library lol. 
+//
+// We could...
+// a) write our own (been there and done that) (fav choice)
+// b) use glad (envolves the user and compiling something ( I think )
+
+
+// THEN
+// we need to deal with this mess. A soup of C-style routines.
+// Design a plot object and use factory method to plot multiple things
+
 // THESE WILL BECOME PRIVATE MEMBER VARS
 static int w = 0;
 static int h = 0;
