@@ -130,9 +130,7 @@ int main() {
     std::vector<vtx> cloud;
 
     for (std::size_t i = 0; i < 100; ++i) {
-        double x = dist(rng);
-        double y = dist(rng);
-        vtx v{x,y};
+        vtx v{dist(rng), dist(rng)};
         cloud.push_back(v);
     }
 
