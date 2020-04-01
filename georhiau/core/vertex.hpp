@@ -39,6 +39,18 @@ public:
         static_assert(D == 2, "Only implemented for D == 2.");
     }
 
+    template <typename... Ts,
+              typename std::enable_if<
+                  std::conjunction<std::is_same<T&, Ts>...>::value &&
+                      (sizeof...(Ts) == D),
+                  int>::type = 0>
+    constexpr vertex(Ts&&... elements) noexcept {
+        m_c = std::array<T, D>{std::forward<Ts>(elements)...};
+        //! We could end up only having D = 2,3.
+        //! As these are the most commonly used dims.
+        static_assert(D == 2, "Only implemented for D == 2.");
+    }
+
     bool operator<(const vertex<T, D>& r) const {
         return m_c[0] < r.m_c[0] ||
                (std::fabs(m_c[0] - r.m_c[0]) < tol && m_c[1] < r.m_c[1]);
