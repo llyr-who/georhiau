@@ -1,12 +1,8 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
-#include <iostream>
-#include <limits>
 #include <list>
-#include <random>
 
-#include "algo/delaunay.hpp"
 #include "core/triangle.hpp"
 
 // we are using the dreadfull old OpenGl ways.

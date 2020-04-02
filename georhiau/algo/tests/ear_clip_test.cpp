@@ -25,6 +25,13 @@ TEST(ear_clip, inside_triangle) {
 
     ASSERT_TRUE(georhiau::algo::inside_triangle(p, a, b, c));
     ASSERT_FALSE(georhiau::algo::inside_triangle(q, a, b, c));
+
+    a = {3.0, 3.0};
+    b = {1.0, 5.0};
+    c = {1.0, 1.0};
+
+    p = {3.0, 1.0};
+    ASSERT_FALSE(georhiau::algo::inside_triangle(p, a, b, c));
 }
 
 TEST(ear_clip, basic) {
@@ -42,7 +49,6 @@ TEST(ear_clip, basic) {
 double pi() { return std::atan(1) * 4; }
 
 TEST(ear_clip, hexagon) {
-    
     std::vector<vertex> cloud;
     std::size_t N = 6;
     for (std::size_t i = 0; i < N; ++i) {
