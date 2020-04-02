@@ -1,3 +1,6 @@
+#include <random>
+
+#include "algo/delaunay.hpp"
 #include "view/plot.hpp"
 
 int main() {
