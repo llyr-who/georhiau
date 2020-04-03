@@ -23,6 +23,17 @@ template <typename T>
 using triangle = georhiau::core::triangle<T>;
 
 template <typename T>
+auto visible(const vertex<T>& v, const edge<T>& e) {
+    // is the vertex to the right of the
+    // line defined by e
+    if (georhiau::core::classify(e.orig(), e.dest(), v) ==
+        vertex<T>::orientation::Right) {
+        return true;
+    }
+    return false;
+}
+
+template <typename T>
 auto inc_trgtn(std::vector<vertex<T>> cloud) {
     std::list<triangle<T>> tris;
 
@@ -50,7 +61,7 @@ auto inc_trgtn(std::vector<vertex<T>> cloud) {
 
     while (!cloud.empty()) {
         // obtain next vertex
-        auto v = cloud.back();
+        const auto v = cloud.back();
         // remove it
         cloud.pop_back();
 
@@ -64,17 +75,37 @@ auto inc_trgtn(std::vector<vertex<T>> cloud) {
             // can v see e?
             if (visible(v, e)) {
                 // form a triangle
+                auto t = triangle<T>{e.orig_ref(), e.dest_ref(), v};
                 // insert triangle
+                tris.push_back(t);
                 // add more edges
+                auto e1 = edge<T>(e.orig(), v);
+                auto e2 = edge<T>(v, e.dest());
+                front.push_back(e1);
+                front.push_back(e2);
             } else {
                 // try again with another vertex.
-                new_front_edges.insert(e);
+                new_front_edges.push_back(e);
             }
+
+
+            // DEBUG
+            std::cout << "old_front" << std::endl;
+            for(const auto& e: front) {
+                georhiau::core::print(e);
+            }
+            std::cout << "new_front" << std::endl;
+            for(const auto& e: new_front_edges) {
+                georhiau::core::print(e);
+            }
+            std::cout << "--------" << std::endl;
         }
 
         // put all new edges to deal with back in frontier
-        std::swap(front, new_front_entries);
+        std::swap(front, new_front_edges);
     }
+
+    return tris;
 }
 
 }  // namespace algo
