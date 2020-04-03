@@ -1,29 +1,25 @@
+#include <random>
+
 #include "algo/delaunay.hpp"
-#include "algo/ear_clip.hpp"
+#include "algo/inc_trgtn.hpp"
 #include "view/plot.hpp"
 
 int main() {
-    using vertex = georhiau::core::vertex<double, 2>;
+    using vtx = georhiau::core::vertex<double, 2>;
 
-    // polygon 1
-    vertex a = {0.1, 2.1};
-    vertex b = {0.1, 0.1};
-    vertex c = {2.0, 0.1};
-    vertex d = {2.0, 2.0};
-    std::vector<vertex> cloud1 = {a, b, c, d};
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_real_distribution<> dist(0.1, 9.9);
 
-    // polygon 2
-    a = {0.1, 1.9};
-    std::vector<vertex> cloud2 = {a, b, c, d};
+    std::vector<vtx> cloud;
 
-    auto tris = georhiau::algo::delaunay(cloud1);
-    georhiau::view::plot(tris);
-    tris = georhiau::algo::ear_clip(cloud1);
-    georhiau::view::plot(tris);
+    for (std::size_t i = 0; i < 10; ++i) {
+        vtx v{dist(rng), dist(rng)};
+        cloud.push_back(v);
+        std::cout << v[0] << " " << v[1] << std::endl;
+    }
 
-    tris = georhiau::algo::delaunay(cloud2);
-    georhiau::view::plot(tris);
-    tris = georhiau::algo::ear_clip(cloud2);
-    georhiau::view::plot(tris);
+    georhiau::algo::inc_trgtn(cloud);
+
 }
 
