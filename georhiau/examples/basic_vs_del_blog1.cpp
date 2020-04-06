@@ -1,29 +1,31 @@
+#include <random>
+
 #include "algo/delaunay.hpp"
-#include "algo/ear_clip.hpp"
+#include "algo/inc_trgtn.hpp"
 #include "view/plot.hpp"
 
 int main() {
-    using vertex = georhiau::core::vertex<double, 2>;
+    using vtx = georhiau::core::vertex<double, 2>;
 
-    // polygon 1
-    vertex a = {0.1, 2.1};
-    vertex b = {0.1, 0.1};
-    vertex c = {2.0, 0.1};
-    vertex d = {2.0, 2.0};
-    std::vector<vertex> cloud1 = {a, b, c, d};
+    /*
+    vtx a = {1.0, 1.5};
+    vtx b = {0.5, 3.0};
+    vtx c = {3.0, 3.0};
+    vtx e = {2.0, 2.0};
+    vtx f = {1.5, 4.0};
 
-    // polygon 2
-    a = {0.1, 1.9};
-    std::vector<vertex> cloud2 = {a, b, c, d};
+    std::vector<vtx> cloud = {a, b, c, e, f};
+    */
+    vtx d = {1.0, 0.5};
+    vtx a = {2.0, 1.0};
+    vtx b = {1.0, 2.0};
+    vtx c = {3.0, 1.0};
 
-    auto tris = georhiau::algo::delaunay(cloud1);
+    std::vector<vtx> cloud = {a, b, c, d};
+
+    auto tris = georhiau::algo::inc_trgtn(cloud);
     georhiau::view::plot(tris);
-    tris = georhiau::algo::ear_clip(cloud1);
-    georhiau::view::plot(tris);
-
-    tris = georhiau::algo::delaunay(cloud2);
-    georhiau::view::plot(tris);
-    tris = georhiau::algo::ear_clip(cloud2);
+    tris = georhiau::algo::delaunay(cloud);
     georhiau::view::plot(tris);
 }
 

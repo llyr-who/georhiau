@@ -81,7 +81,6 @@ template <typename T, std::size_t D>
 inline edge<T, D> rotate(const edge<T, D>& e) {
     auto orig = e.orig();
     auto dest = e.dest();
-
     // midpoint
     auto m = e.midpoint();
     auto dir = dest - orig;
