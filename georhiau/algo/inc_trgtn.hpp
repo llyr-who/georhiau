@@ -46,16 +46,32 @@ auto inc_trgtn(std::vector<vertex<T>> cloud) {
     auto t = triangle<T>{*(it - 1), *(it - 2), *(it - 3)};
     tris.push_back(t);
 
-    edge<T> e1(*(it - 3), *(it - 2));
-    edge<T> e2(*(it - 2), *(it - 1));
-    edge<T> e3(*(it - 1), *(it - 3));
+    auto v2 = *(it - 3);
+    auto v1 = *(it - 2);
+    auto v0 = *(it - 1);
+
+    edge<T> e1(v1, v2);
+    edge<T> e2(v2, v0);
+    edge<T> e3(v0, v1);
+    std::list<edge<T>> front = {e1, e2, e3};
+
+    /*
+    if (georhiau::core::classify(v1, v2, v0) == vertex<T>::orientation::Left) {
+    } else {
+        edge<T> f1(v2, v1);
+        edge<T> f2(v1, v0);
+        edge<T> f3(v1, v0);
+        front = {f1, f2, f3};
+    }
+*/
+    for (auto& c : cloud) {
+        georhiau::core::print(c);
+    }
 
     // we add the edges such that "right" of the edge
     // is inside the triangle TO BE FOUND (if there is one).
     // For example, to the right of e1 there does not exist
     // a triangle currently in tris that has it.
-
-    std::list<edge<T>> front = {e1, e2, e3};
 
     cloud.erase(it - 3, it - 1);
 
@@ -81,24 +97,13 @@ auto inc_trgtn(std::vector<vertex<T>> cloud) {
                 // add more edges
                 auto e1 = edge<T>(e.orig(), v);
                 auto e2 = edge<T>(v, e.dest());
+
                 front.push_back(e1);
                 front.push_back(e2);
             } else {
                 // try again with another vertex.
                 new_front_edges.push_back(e);
             }
-
-
-            // DEBUG
-            std::cout << "old_front" << std::endl;
-            for(const auto& e: front) {
-                georhiau::core::print(e);
-            }
-            std::cout << "new_front" << std::endl;
-            for(const auto& e: new_front_edges) {
-                georhiau::core::print(e);
-            }
-            std::cout << "--------" << std::endl;
         }
 
         // put all new edges to deal with back in frontier
