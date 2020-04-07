@@ -14,9 +14,13 @@ int main() {
 
     std::vector<vtx> cloud;
 
-    for (std::size_t i = 0; i < 100; ++i) {
-        vtx v{dist(rng), dist(rng)};
-        cloud.push_back(v);
+    for (std::size_t i = 0; i < 10000; ++i) {
+        auto x = dist(rng);
+        auto y = dist(rng);
+        if ((x - 5) * (x - 5) + (y - 5) * (y - 5) < 5.0) {
+            vtx v{x, y};
+            cloud.push_back(v);
+        }
     }
 
     auto tris = georhiau::algo::delaunay(cloud);
