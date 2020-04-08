@@ -1,7 +1,7 @@
 #include <random>
 
-#include "algo/delaunay.hpp"
 #include "view/plot.hpp"
+#include "algo/delaunay.hpp"
 
 int main() {
     using vtx = georhiau::core::vertex<double, 2>;

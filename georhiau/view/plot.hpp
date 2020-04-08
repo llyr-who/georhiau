@@ -60,9 +60,9 @@ auto projection_params(std::list<georhiau::core::edge<double, 2>>& es) {
         auto o = e.orig();
         auto d = e.dest();
         if (o[0] > max_w) max_w = o[0];
-        if (o[1] > max_w) max_h = o[1];
+        if (o[1] > max_h) max_h = o[1];
         if (d[0] > max_w) max_w = d[0];
-        if (d[1] > max_w) max_h = d[1];
+        if (d[1] > max_h) max_h = d[1];
     }
     return std::make_pair(max_w, max_h);
 }
@@ -108,7 +108,7 @@ void draw(std::list<georhiau::core::edge<double, 2>>& es) {
 
     for (const auto& e : es) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glBegin(GL_LINE);
+        glBegin(GL_LINES);
         glColor3f(0.1f, 0.0f, 0.0f);
         glVertex2f(e.orig()[0], e.orig()[1]);
         glVertex2f(e.dest()[0], e.dest()[1]);
