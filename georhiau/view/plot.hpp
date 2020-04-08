@@ -6,21 +6,6 @@
 #include "core/edge.hpp"
 #include "core/triangle.hpp"
 
-// we are using the dreadfull old OpenGl ways.
-// That is, we are not using vertex array buffers.
-// The main reason behind this is that I can not
-// decide on a extension loading library lol.
-//
-// We could...
-// a) write our own (been there and done that) (fav choice)
-// b) use glad (envolves the user and compiling something ( I think )
-
-// THEN
-// we need to deal with this mess. A soup of C-style routines.
-// Design a plot object and use factory method to plot multiple things
-
-// THESE WILL BECOME PRIVATE MEMBER VARS
-
 static int w = 0;
 static int h = 0;
 
@@ -92,6 +77,9 @@ void draw(std::list<georhiau::core::triangle<double>>& tris) {
     }
 }
 
+using georhiau::core::norm;
+using georhiau::core::rotate;
+
 void draw(std::list<georhiau::core::edge<double, 2>>& es) {
     glViewport(0, 0, w, h);
 
@@ -109,9 +97,24 @@ void draw(std::list<georhiau::core::edge<double, 2>>& es) {
     for (const auto& e : es) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glBegin(GL_LINES);
-        glColor3f(0.1f, 0.0f, 0.0f);
+        glColor3f(0.0f, 0.0f, 0.0f);
         glVertex2f(e.orig()[0], e.orig()[1]);
         glVertex2f(e.dest()[0], e.dest()[1]);
+        glEnd();
+        // we want to draw a triangle to
+        // indicate directedness
+        auto mp = e.midpoint();
+        auto bm = e.orig() - mp;
+        auto s = 0.1 / norm(bm);
+        auto x = mp + s * rotate(bm, 1.0);
+        auto y = mp + s * rotate(bm, -1.0);
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glBegin(GL_TRIANGLES);
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glVertex2f(mp[0], mp[1]);
+        glVertex2f(x[0], x[1]);
+        glVertex2f(y[0], y[1]);
         glEnd();
     }
 }
