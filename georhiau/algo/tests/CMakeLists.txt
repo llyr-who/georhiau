@@ -18,7 +18,13 @@ target_link_libraries(ear_clip_test
                       gtest_main
 )
 
+add_executable(rng_test rng_test.cpp)
+target_link_libraries(rng_test
+                      gtest_main
+)
+
 add_test(NAME giftwrap_test COMMAND giftwrap_test)
 add_test(NAME mate_test COMMAND mate_test)
 add_test(NAME delaunay_test COMMAND delaunay_test)
 add_test(NAME ear_clip_test COMMAND ear_clip_test)
+add_test(NAME rng_test COMMAND rng_test)

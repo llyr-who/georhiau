@@ -7,6 +7,9 @@
 //! T is the type.
 //! D is the dimension of the space.
 
+//! vertex is misleading and goes against strong-typed nature
+//! of the code. Some instances I use a vertex as a vector;
+
 namespace georhiau {
 namespace core {
 
@@ -89,6 +92,12 @@ private:
 template <typename T, std::size_t D>
 inline T cross(const vertex<T, D>& v1, const vertex<T, D>& v2) {
     return v1[0] * v2[1] - v1[1] * v2[0];
+}
+
+template <typename T, std::size_t D>
+inline vertex<T, D> rotate(const vertex<T, D>& v, const T& rad) {
+    return vertex<T, D>{std::cos(rad) * v[0] + std::sin(rad) * v[1],
+                        std::cos(rad) * v[1] - std::sin(rad) * v[0]};
 }
 
 template <typename T, std::size_t D>
