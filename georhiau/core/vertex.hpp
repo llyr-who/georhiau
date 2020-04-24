@@ -60,9 +60,13 @@ public:
     }
 
     bool operator==(const vertex<T, D>& r) const {
-        auto ans = (std::fabs(m_c[0] - r.m_c[0]) < tol) &&
-                   (std::fabs(m_c[1] - r.m_c[1]) < tol);
-        return ans;
+        return (std::fabs(m_c[0] - r.m_c[0]) < tol) &&
+               (std::fabs(m_c[1] - r.m_c[1]) < tol);
+    }
+
+    bool operator!=(const vertex<T,D>& r) const {
+        return (std::fabs(m_c[0] - r.m_c[0]) > tol) ||
+               (std::fabs(m_c[1] - r.m_c[1]) > tol);
     }
 
     vertex operator-(const vertex<T, D>& r) const {

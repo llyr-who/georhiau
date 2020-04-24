@@ -1,51 +1,55 @@
 #include "algo/giftwrap.hpp"
-
 #include "core/edge.hpp"
+
+#include "view/plot.hpp"
 
 #include "gtest/gtest.h"
 
-double pi() { return std::atan(1)*4; }
+#include <list>
+#include <vector>
+using vertex = georhiau::core::vertex<double, 2>;
+using edge = georhiau::core::edge<double, 2>;
+using point_cloud = std::vector<vertex>;
 
-TEST(giftwrap, smallest_vertex_simple) {
-    using vertex = georhiau::core::vertex<double, 2>;
+const point_cloud cloud1 = {{1.0, 5.0}, {2.0, 2.0}, {3.0, 3.0},
+                            {0.0, 1.0}, {3.0, 2.0}, {10.0, 3.0},
+                            {5.0, 1.0}, {8.0, 0.5}, {14.0, 3.0}};
 
-    vertex v1 = {1.0, 1.0};
-    vertex v2 = {2.0, 2.0};
-    vertex v3 = {3.0, 3.0};
-    std::vector<vertex> cloud{v1, v2, v3};
+using georhiau::algo::first_hull_edge;
+using georhiau::algo::left_most_edge;
 
-    ASSERT_EQ(*georhiau::algo::smallest_vertex<double>(cloud), v1);
+TEST(giftwrap, left_most_edge) {
+    auto e1 = left_most_edge(cloud1[3], cloud1);
+    auto e2 = left_most_edge(e1.dest(), cloud1);
+    auto e3 = left_most_edge(e2.dest(), cloud1);
+    auto e4 = left_most_edge(e3.dest(), cloud1);
+    auto e1_exp = edge(cloud1[3], cloud1[0]);
+    auto e2_exp = edge(cloud1[0], cloud1[8]);
+    auto e3_exp = edge(cloud1[8], cloud1[7]);
+    auto e4_exp = edge(cloud1[7], cloud1[3]);
+
+    ASSERT_EQ(e1, e1_exp);
+    ASSERT_EQ(e2, e2_exp);
+    ASSERT_EQ(e3, e3_exp);
+    ASSERT_EQ(e4, e4_exp);
 }
 
-TEST(giftwrap, smallest_vertex_circle) {
-    using vertex = georhiau::core::vertex<double, 2>;
-
-    std::vector<vertex> cloud;
-    
-    std::size_t N = 4;
-    for (std::size_t i = 0; i < N; ++i) {
-        double t = 2.0 * pi() * i * (1.0/static_cast<double>(N));
-        cloud.push_back(vertex{std::cos(t), std::sin(t)});
-    }
-    cloud.push_back(vertex{0.0, 0.0});
-
-    ASSERT_EQ(*georhiau::algo::smallest_vertex<double>(cloud), cloud[2]);
-}
-
-TEST(gitwrap, first_hull_edge_simple) {
-    using vertex = georhiau::core::vertex<double, 2>;
-    using edge = georhiau::core::edge<double, 2>;
-
-    vertex v1 = {1.0, 5.0};
-    vertex v2 = {2.0, 2.0};
-    vertex v3 = {3.0, 3.0};
-    vertex v4 = {0.0, 1.0};
-    vertex v5 = {3.0, 2.0};
-    vertex v6 = {10.0, 3.0};
-
-    std::vector<vertex> cloud{v1, v2, v3, v4, v5, v6};
-
-    auto hull_edge = georhiau::algo::first_hull_edge<double>(cloud);
-    edge hull_edge_ans(v4,v1);
+TEST(giftwrap, first_hull_edge) {
+    auto hull_edge = first_hull_edge<double>(cloud1);
+    edge hull_edge_ans(cloud1[3], cloud1[0]);
     ASSERT_EQ(hull_edge, hull_edge_ans);
+}
+
+using georhiau::algo::giftwrap;
+
+TEST(giftwrap, giftwrap) {
+    auto convex_hull = giftwrap(cloud1);
+    auto e1_exp = edge(cloud1[3], cloud1[0]);
+    auto e2_exp = edge(cloud1[0], cloud1[8]);
+    auto e3_exp = edge(cloud1[8], cloud1[7]);
+    auto e4_exp = edge(cloud1[7], cloud1[3]);
+
+    std::list<edge> convex_hull_exp = {e1_exp, e2_exp, e3_exp, e4_exp};
+
+    ASSERT_EQ(convex_hull, convex_hull_exp);
 }
