@@ -2,17 +2,17 @@
 
 #include "gtest/gtest.h"
 
-using vertex = georhiau::core::vertex<double, 2>;
+using vertex = georhiau::vertex<double, 2>;
 
 template <std::size_t N>
-using polygon = georhiau::core::polygon<double, N>;
+using polygon = georhiau::polygon<double, N>;
 
 TEST(ear_clip, convex) {
     vertex a = {0.0, 0.0};
     vertex b = {1.0, 0.0};
     vertex c = {1.0, 1.0};
 
-    ASSERT_TRUE(georhiau::algo::convex(a, b, c));
+    ASSERT_TRUE(georhiau::convex(a, b, c));
 }
 
 TEST(ear_clip, inside_triangle) {
@@ -23,15 +23,15 @@ TEST(ear_clip, inside_triangle) {
     vertex p = {1.0, 1.0};
     vertex q = {10.0, 1.0};
 
-    ASSERT_TRUE(georhiau::algo::inside_triangle(p, a, b, c));
-    ASSERT_FALSE(georhiau::algo::inside_triangle(q, a, b, c));
+    ASSERT_TRUE(georhiau::inside_triangle(p, a, b, c));
+    ASSERT_FALSE(georhiau::inside_triangle(q, a, b, c));
 
     a = {3.0, 3.0};
     b = {1.0, 5.0};
     c = {1.0, 1.0};
 
     p = {3.0, 1.0};
-    ASSERT_FALSE(georhiau::algo::inside_triangle(p, a, b, c));
+    ASSERT_FALSE(georhiau::inside_triangle(p, a, b, c));
 }
 
 TEST(ear_clip, basic) {
@@ -41,7 +41,7 @@ TEST(ear_clip, basic) {
     vertex d = {0.0, 1.0};
     std::vector<vertex> p = {a, b, c, d};
 
-    auto tris = georhiau::algo::ear_clip(p);
+    auto tris = georhiau::ear_clip(p);
 
     ASSERT_EQ(tris.size(), 2);
 }
@@ -56,6 +56,6 @@ TEST(ear_clip, hexagon) {
         cloud.push_back(vertex{std::cos(t), std::sin(t)});
     }
 
-    auto tris = georhiau::algo::ear_clip(cloud);
+    auto tris = georhiau::ear_clip(cloud);
     ASSERT_EQ(tris.size(), 4);
 }

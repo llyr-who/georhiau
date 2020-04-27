@@ -4,9 +4,9 @@
 #include "gtest/gtest.h"
 
 template <std::size_t N>
-using polygon = georhiau::core::polygon<double, N>;
-using triangle = georhiau::core::triangle<double>;
-using vertex = georhiau::core::vertex<double, 2>;
+using polygon = georhiau::polygon<double, N>;
+using triangle = georhiau::triangle<double>;
+using vertex = georhiau::vertex<double, 2>;
 
 TEST(polygon, construction) {
     vertex a = {1.0, 1.0};
@@ -33,5 +33,5 @@ TEST(polygon, area)
     
     triangle t = {a,b,c};
 
-    ASSERT_EQ(georhiau::core::area(t), 0.5);
+    ASSERT_EQ(georhiau::area(t), 0.5);
 }

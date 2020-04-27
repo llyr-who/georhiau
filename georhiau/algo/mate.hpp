@@ -9,22 +9,14 @@
 #include "core/vertex.hpp"
 
 namespace georhiau {
-namespace algo {
-
-// rsi prevention
-template <typename T>
-using edge = georhiau::core::edge<T, 2>;
-
-template <typename T>
-using vertex = georhiau::core::vertex<T, 2>;
 
 // mate version 1 (my version)
 // if the return value is cloud.end() then we have failed
 template <typename T>
-auto mate(const edge<T>& e, const std::vector<vertex<T>>& cloud) {
+auto mate(const edge<T, 2>& e, const std::vector<vertex<T, 2>>& cloud) {
     auto best_p = cloud.end();
     T t, best_t = std::numeric_limits<T>::max();
-    auto e_rot = georhiau::core::rotate(e);
+    auto e_rot = georhiau::rotate(e);
     for (auto pnt = cloud.begin(); pnt != cloud.end(); ++pnt) {
         // obtain midpoint
         auto m = e.midpoint();
@@ -46,22 +38,22 @@ auto mate(const edge<T>& e, const std::vector<vertex<T>>& cloud) {
 // mate version 2 (temp for benchmarking and testing)
 // "I stole this from a book" version
 template <typename T>
-auto mate2(const edge<T>& e, const std::vector<vertex<T>>& cloud) {
+auto mate2(const edge<T, 2>& e, const std::vector<vertex<T, 2>>& cloud) {
     auto best_p = cloud.end();
     T t, best_t = std::numeric_limits<T>::max();
-    auto e_rot = georhiau::core::rotate(e);
+    auto e_rot = georhiau::rotate(e);
     for (auto pnt = cloud.begin(); pnt != cloud.end(); ++pnt) {
         // escape early if we are not on the right.
-        if (georhiau::core::classify(e.orig(), e.dest(), *pnt) !=
-            vertex<T>::orientation::Right) {
+        if (georhiau::classify(e.orig(), e.dest(), *pnt) !=
+            vertex<T, 2>::orientation::Right) {
             continue;
         }
-        edge<T> g = rotate(edge<T>{e.dest(), *pnt});
+        edge<T, 2> g = rotate(edge<T, 2>{e.dest(), *pnt});
 
         // we don't want a mate that is parallel or colinear
-        auto [type, t] = georhiau::core::intersect(e_rot, g);
-        if (type == edge<T>::intersection::Parallel ||
-            type == edge<T>::intersection::Colinear) {
+        auto [type, t] = georhiau::intersect(e_rot, g);
+        if (type == edge<T, 2>::intersection::Parallel ||
+            type == edge<T, 2>::intersection::Colinear) {
             continue;
         }
         //
@@ -73,6 +65,5 @@ auto mate2(const edge<T>& e, const std::vector<vertex<T>>& cloud) {
     return best_p;
 }
 
-}  // namespace algo
 }  // namespace georhiau
 

@@ -3,7 +3,7 @@
 #include "core/triangle.hpp"
 #include "gtest/gtest.h"
 
-using vertex = georhiau::core::vertex<double, 2>;
+using vertex = georhiau::vertex<double, 2>;
 
 TEST(delaunay, single_element_mesh) {
     vertex a = {0.0, 0.0};
@@ -12,9 +12,9 @@ TEST(delaunay, single_element_mesh) {
 
     std::vector<vertex> cloud = {a, b, c};
 
-    auto tngltn = georhiau::algo::delaunay(cloud);
+    auto tngltn = georhiau::delaunay(cloud);
 
-    georhiau::core::triangle<double> t = {a, b, c};
+    georhiau::triangle<double> t = {a, b, c};
 
     ASSERT_EQ(tngltn.size(), 1);
     ASSERT_EQ(tngltn.front(), t);
@@ -28,10 +28,10 @@ TEST(delaunay, square) {
 
     std::vector<vertex> cloud = {a, b, c, d};
 
-    auto tngltn = georhiau::algo::delaunay(cloud);
+    auto tngltn = georhiau::delaunay(cloud);
 
-    georhiau::core::triangle<double> t1 = {a, b, d};
-    georhiau::core::triangle<double> t2 = {d, b, c};
+    georhiau::triangle<double> t1 = {a, b, d};
+    georhiau::triangle<double> t2 = {d, b, c};
 
     auto it1 = std::find(tngltn.begin(), tngltn.end(), t1);
     auto it2 = std::find(tngltn.begin(), tngltn.end(), t2);
@@ -54,7 +54,7 @@ TEST(delaunay, circle) {
     cloud1.push_back(vertex{0.0, 0.0});
 
     ASSERT_EQ(N + 1, cloud1.size());
-    auto tris1 = georhiau::algo::delaunay(cloud1);
+    auto tris1 = georhiau::delaunay(cloud1);
     ASSERT_EQ(N, tris1.size());
 
     std::vector<vertex> cloud2;
@@ -66,7 +66,7 @@ TEST(delaunay, circle) {
     cloud2.push_back(vertex{0.0, 0.0});
 
     ASSERT_EQ(N + 1, cloud2.size());
-    auto tris2 = georhiau::algo::delaunay(cloud2);
+    auto tris2 = georhiau::delaunay(cloud2);
     ASSERT_EQ(N, tris2.size());
 
     std::vector<vertex> cloud3;
@@ -78,6 +78,6 @@ TEST(delaunay, circle) {
     cloud3.push_back(vertex{0.0, 0.0});
 
     ASSERT_EQ(N + 1, cloud3.size());
-    auto tris3 = georhiau::algo::delaunay(cloud3);
+    auto tris3 = georhiau::delaunay(cloud3);
     ASSERT_EQ(N, tris3.size());
 }

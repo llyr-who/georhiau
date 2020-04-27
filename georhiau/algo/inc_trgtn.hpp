@@ -11,30 +11,20 @@
 #include "core/vertex.hpp"
 
 namespace georhiau {
-namespace algo {
 
 template <typename T>
-using vertex = georhiau::core::vertex<T, 2>;
-
-template <typename T>
-using edge = georhiau::core::edge<T, 2>;
-
-template <typename T>
-using triangle = georhiau::core::triangle<T>;
-
-template <typename T>
-auto visible(const vertex<T>& v, const edge<T>& e) {
+auto visible(const vertex<T, 2>& v, const edge<T, 2>& e) {
     // is the vertex to the right of the
     // line defined by e
-    if (georhiau::core::classify(e.orig(), e.dest(), v) ==
-        vertex<T>::orientation::Right) {
+    if (georhiau::classify(e.orig(), e.dest(), v) ==
+        vertex<T, 2>::orientation::Right) {
         return true;
     }
     return false;
 }
 
 template <typename T>
-auto inc_trgtn(std::vector<vertex<T>> cloud) {
+auto inc_trgtn(std::vector<vertex<T, 2>> cloud) {
     std::list<triangle<T>> tris;
 
     if (cloud.size() < 3) {
@@ -50,22 +40,22 @@ auto inc_trgtn(std::vector<vertex<T>> cloud) {
     auto v1 = *(it - 2);
     auto v0 = *(it - 1);
 
-    edge<T> e1(v1, v2);
-    edge<T> e2(v2, v0);
-    edge<T> e3(v0, v1);
-    std::list<edge<T>> front = {e1, e2, e3};
+    edge<T, 2> e1(v1, v2);
+    edge<T, 2> e2(v2, v0);
+    edge<T, 2> e3(v0, v1);
+    std::list<edge<T, 2>> front = {e1, e2, e3};
 
     /*
-    if (georhiau::core::classify(v1, v2, v0) == vertex<T>::orientation::Left) {
+    if (georhiau::classify(v1, v2, v0) == vertex<T, 2>::orientation::Left) {
     } else {
-        edge<T> f1(v2, v1);
-        edge<T> f2(v1, v0);
-        edge<T> f3(v1, v0);
+        edge<T, 2> f1(v2, v1);
+        edge<T, 2> f2(v1, v0);
+        edge<T, 2> f3(v1, v0);
         front = {f1, f2, f3};
     }
 */
     for (auto& c : cloud) {
-        georhiau::core::print(c);
+        georhiau::print(c);
     }
 
     // we add the edges such that "right" of the edge
@@ -81,7 +71,7 @@ auto inc_trgtn(std::vector<vertex<T>> cloud) {
         // remove it
         cloud.pop_back();
 
-        std::list<edge<T>> new_front_edges;
+        std::list<edge<T, 2>> new_front_edges;
 
         while (!front.empty()) {
             // obtain and remove edge from front
@@ -95,8 +85,8 @@ auto inc_trgtn(std::vector<vertex<T>> cloud) {
                 // insert triangle
                 tris.push_back(t);
                 // add more edges
-                auto e1 = edge<T>(e.orig(), v);
-                auto e2 = edge<T>(v, e.dest());
+                auto e1 = edge<T, 2>(e.orig(), v);
+                auto e2 = edge<T, 2>(v, e.dest());
 
                 front.push_back(e1);
                 front.push_back(e2);
@@ -113,6 +103,5 @@ auto inc_trgtn(std::vector<vertex<T>> cloud) {
     return tris;
 }
 
-}  // namespace algo
 }  // namespace georhiau
 

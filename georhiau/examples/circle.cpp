@@ -5,7 +5,7 @@
 #include "core/vertex.hpp"
 #include "view/plot.hpp"
 
-using vertex = georhiau::core::vertex<double, 2>;
+using vertex = georhiau::vertex<double, 2>;
 double pi() { return std::atan(1) * 4; }
 
 int main() {
@@ -20,7 +20,7 @@ int main() {
 
     std::cout << "input cloud" << std::endl;
     std::cout << cloud.size() << std::endl;
-    auto tris = georhiau::algo::delaunay(cloud);
+    auto tris = georhiau::delaunay(cloud);
 
     std::cout << "Number of triangles" << std::endl;
     std::cout << tris.size() << std::endl;
@@ -28,7 +28,7 @@ int main() {
     int i = 0;
     double area = 0.0;
     for (const auto& t : tris) {
-        area += georhiau::core::area(t);
+        area += georhiau::area(t);
     }
 
     std::cout << "total area of triangles: " << area << std::endl;

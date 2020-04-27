@@ -5,7 +5,7 @@
 #include "view/plot.hpp"
 
 int main() {
-    using vtx = georhiau::core::vertex<double, 2>;
+    using vtx = georhiau::vertex<double, 2>;
 
     /*
     vtx a = {1.0, 1.5};
@@ -23,9 +23,9 @@ int main() {
 
     std::vector<vtx> cloud = {a, b, c, d};
 
-    auto tris = georhiau::algo::inc_trgtn(cloud);
+    auto tris = georhiau::inc_trgtn(cloud);
     georhiau::view::plot(tris);
-    tris = georhiau::algo::delaunay(cloud);
+    tris = georhiau::delaunay(cloud);
     georhiau::view::plot(tris);
 }
 

@@ -23,7 +23,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action,
 }
 
 // returns scaling factors for glOrtho
-auto projection_params(std::list<georhiau::core::triangle<double>>& tris) {
+auto projection_params(std::list<georhiau::triangle<double>>& tris) {
     auto max_w = 0.0;
     auto max_h = 0.0;
 
@@ -37,7 +37,7 @@ auto projection_params(std::list<georhiau::core::triangle<double>>& tris) {
 }
 
 // returns scaling factors for glOrtho
-auto projection_params(std::list<georhiau::core::edge<double, 2>>& es) {
+auto projection_params(std::list<georhiau::edge<double, 2>>& es) {
     auto max_w = 0.0;
     auto max_h = 0.0;
 
@@ -52,7 +52,7 @@ auto projection_params(std::list<georhiau::core::edge<double, 2>>& es) {
     return std::make_pair(max_w, max_h);
 }
 
-auto projection_params(std::list<georhiau::core::vertex<double, 2>>& ps) {
+auto projection_params(std::list<georhiau::vertex<double, 2>>& ps) {
     auto max_w = 0.0;
     auto max_h = 0.0;
 
@@ -63,7 +63,7 @@ auto projection_params(std::list<georhiau::core::vertex<double, 2>>& ps) {
     return std::make_pair(max_w, max_h);
 }
 
-void draw(std::list<georhiau::core::triangle<double>>& tris) {
+void draw(std::list<georhiau::triangle<double>>& tris) {
     glViewport(0, 0, w, h);
 
     glMatrixMode(GL_PROJECTION);
@@ -88,10 +88,10 @@ void draw(std::list<georhiau::core::triangle<double>>& tris) {
     }
 }
 
-using georhiau::core::norm;
-using georhiau::core::rotate;
+using georhiau::norm;
+using georhiau::rotate;
 
-void draw(std::list<georhiau::core::edge<double, 2>>& es) {
+void draw(std::list<georhiau::edge<double, 2>>& es) {
     glViewport(0, 0, w, h);
 
     glMatrixMode(GL_PROJECTION);
@@ -130,7 +130,7 @@ void draw(std::list<georhiau::core::edge<double, 2>>& es) {
     }
 }
 
-void draw(std::list<georhiau::core::vertex<double, 2>>& ps) {
+void draw(std::list<georhiau::vertex<double, 2>>& ps) {
     glViewport(0, 0, w, h);
 
     glMatrixMode(GL_PROJECTION);
@@ -210,7 +210,7 @@ auto get_window() {
     return window;
 }
 
-auto plot(std::list<georhiau::core::triangle<double>>& tris) {
+auto plot(std::list<georhiau::triangle<double>>& tris) {
     auto window = get_window();
     if (window) {
         auto finished = run(window, tris);
@@ -218,7 +218,7 @@ auto plot(std::list<georhiau::core::triangle<double>>& tris) {
     exit(window);
 }
 
-auto plot(std::list<georhiau::core::edge<double, 2>>& es) {
+auto plot(std::list<georhiau::edge<double, 2>>& es) {
     auto window = get_window();
     if (window) {
         auto finished = run(window, es);
@@ -226,7 +226,7 @@ auto plot(std::list<georhiau::core::edge<double, 2>>& es) {
     exit(window);
 }
 
-auto plot(std::list<georhiau::core::vertex<double, 2>>& ps) {
+auto plot(std::list<georhiau::vertex<double, 2>>& ps) {
     auto window = get_window();
     if (window) {
         auto finished = run(window, ps);

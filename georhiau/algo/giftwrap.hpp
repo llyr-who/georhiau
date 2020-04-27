@@ -7,37 +7,30 @@
 #include "core/vertex.hpp"
 
 namespace georhiau {
-namespace algo {
 
 template <typename T>
-using edge = georhiau::core::edge<T, 2>;
-
-template <typename T>
-using vertex = georhiau::core::vertex<T, 2>;
-
-template <typename T>
-using point_cloud = std::vector<vertex<T>>;
+using point_cloud = std::vector<vertex<T, 2>>;
 
 // Given a point and a point cloud, this routine returns
 // an edge. The origin being p0 and the destination being the
 // vertex that makes the edge the left most.
 // The complexity is linear
 template <typename T>
-auto left_most_edge(const vertex<T>& p0, const point_cloud<T>& cloud) {
+auto left_most_edge(const vertex<T, 2>& p0, const point_cloud<T>& cloud) {
     std::size_t m = 0, i = 1;
     for (; i < cloud.size(); ++i) {
         if (cloud[m] == p0) {
             ++m;
             continue;
         }
-        auto orientation = core::classify(p0, cloud[m], cloud[i]);
+        auto orientation = classify(p0, cloud[m], cloud[i]);
 
-        if ((orientation == vertex<T>::orientation::Left) ||
-            (orientation == vertex<T>::orientation::Between)) {
+        if ((orientation == vertex<T, 2>::orientation::Left) ||
+            (orientation == vertex<T, 2>::orientation::Between)) {
             m = i;
         }
     }
-    return edge<T>{p0, cloud[m]};
+    return edge<T, 2>{p0, cloud[m]};
 }
 
 template <typename T>
@@ -62,7 +55,7 @@ auto giftwrap(const point_cloud<T>& c) {
     // obtain next edge.
     auto e = left_most_edge(e0.dest(), c);
 
-    std::list<edge<T>> convex_hull = {e0};
+    std::list<edge<T, 2>> convex_hull = {e0};
     while (e.dest() != e0.dest()) {
         convex_hull.push_back(e);
         e = left_most_edge(e.dest(), c);
@@ -70,6 +63,5 @@ auto giftwrap(const point_cloud<T>& c) {
     return convex_hull;
 }
 
-}  // namespace algo
 }  // namespace georhiau
 

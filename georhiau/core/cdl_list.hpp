@@ -6,7 +6,6 @@
 // just so I can get this blog post done! :)
 
 namespace georhiau {
-namespace core {
 template <class type>
 class cdl_list {
 public:
@@ -368,5 +367,4 @@ void cdl_list<type>::erase(iterator &itr) {
 
     return;
 }
-}  // namespace core
 }  // namespace georhiau

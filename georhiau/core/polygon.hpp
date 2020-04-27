@@ -5,11 +5,10 @@
 #include "core/vertex.hpp"
 
 namespace georhiau {
-namespace core {
 template <typename T, std::size_t N>
 class polygon {
 public:
-    using vertex = georhiau::core::vertex<T, 2>;
+    using vertex = georhiau::vertex<T, 2>;
     // We use a set since {v1,v2,v3} == {v3,v2,v1}
     // vectors cry about order. We could add them to a
     // vector and then sort.
@@ -57,5 +56,4 @@ void print(const polygon<T, N>& p) {
     }
 }
 
-}  // namespace core
 }  // namespace georhiau

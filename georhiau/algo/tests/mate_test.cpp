@@ -2,8 +2,8 @@
 
 #include "gtest/gtest.h"
 
-using vertex = georhiau::core::vertex<double, 2>;
-using edge = georhiau::core::edge<double, 2>;
+using vertex = georhiau::vertex<double, 2>;
+using edge = georhiau::edge<double, 2>;
 
 TEST(mate, basic) {
     // create point cloud
@@ -20,8 +20,8 @@ TEST(mate, basic) {
     vertex dst = {0.0, 1.0};
     edge edg(org, dst);
 
-    auto r1 = georhiau::algo::mate<double>(edg, cloud);
-    auto r2 = georhiau::algo::mate2<double>(edg, cloud);
+    auto r1 = georhiau::mate<double>(edg, cloud);
+    auto r2 = georhiau::mate2<double>(edg, cloud);
     // Does it get the correct answer?
     ASSERT_EQ(*r1, a);
     // Does it match the other one?
@@ -36,8 +36,8 @@ TEST(mate, single_triangle) {
     std::vector<vertex> cloud = {a, b, c};
     edge edg(a, c);
 
-    auto r1 = georhiau::algo::mate<double>(edg, cloud);
-    auto r2 = georhiau::algo::mate2<double>(edg, cloud);
+    auto r1 = georhiau::mate<double>(edg, cloud);
+    auto r2 = georhiau::mate2<double>(edg, cloud);
     // Does it get the correct answer?
     ASSERT_EQ(*r1, b);
     // Does it match the other one?
