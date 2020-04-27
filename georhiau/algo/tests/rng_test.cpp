@@ -3,8 +3,8 @@
 
 #include "gtest/gtest.h"
 
-using vertex = georhiau::core::vertex<double, 2>;
-using edge = georhiau::core::edge<double, 2>;
+using vertex = georhiau::vertex<double, 2>;
+using edge = georhiau::edge<double, 2>;
 
 TEST(rng, basic) {
     vertex a = {0.0, 0.0};
@@ -13,7 +13,7 @@ TEST(rng, basic) {
 
     std::vector<vertex> cloud = {a, b, c};
 
-    auto rng = georhiau::algo::rng(cloud);
+    auto rng = georhiau::rng(cloud);
 
     ASSERT_EQ(rng.size(), 4);
 

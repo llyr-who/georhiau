@@ -11,7 +11,6 @@
 //! of the code. Some instances I use a vertex as a vector;
 
 namespace georhiau {
-namespace core {
 
 template <typename T, std::size_t D>
 class vertex {
@@ -152,6 +151,5 @@ inline typename vertex<T, D>::orientation classify(const vertex<T, D>& p0,
     return vertex<T, D>::orientation::Between;
 }
 
-}  // namespace core
 }  // namespace georhiau
 

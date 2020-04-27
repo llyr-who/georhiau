@@ -7,15 +7,14 @@
 #include <vector>
 
 namespace georhiau {
-namespace algo {
 
-using triangle_d = georhiau::core::triangle<double>;
-using vertex_d = georhiau::core::vertex<double, 2>;
-using vertex_d_list = georhiau::core::cdl_list<vertex_d>;
+using triangle_d = georhiau::triangle<double>;
+using vertex_d = georhiau::vertex<double, 2>;
+using vertex_d_list = georhiau::cdl_list<vertex_d>;
 
 // this routine can probably be pulled out of here.
 bool convex(const vertex_d& a, const vertex_d& b, const vertex_d& c) {
-    if (georhiau::core::classify(a, c, b) == vertex_d::orientation::Right) {
+    if (georhiau::classify(a, c, b) == vertex_d::orientation::Right) {
         return true;
     }
     return false;
@@ -100,6 +99,5 @@ auto ear_clip(const std::vector<vertex_d>& verts) {
     return tris;
 }  // namespace algo
 
-}  // namespace algo
 }  // namespace georhiau
 

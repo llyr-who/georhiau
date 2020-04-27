@@ -4,7 +4,7 @@
 #include "view/plot.hpp"
 
 int main() {
-    using vtx = georhiau::core::vertex<double, 2>;
+    using vtx = georhiau::vertex<double, 2>;
 
     std::random_device dev;
     std::mt19937 rng(dev());
@@ -21,7 +21,7 @@ int main() {
         cloud.push_back(v);
     }
 
-    auto edges = georhiau::algo::rng(cloud);
+    auto edges = georhiau::rng(cloud);
     georhiau::view::plot(edges);
 }
 

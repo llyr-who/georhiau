@@ -7,10 +7,9 @@
 #include <vector>
 
 namespace georhiau {
-namespace algo {
 
-using edge_d = georhiau::core::edge<double, 2>;
-using vertex_d = georhiau::core::vertex<double, 2>;
+using edge_d = georhiau::edge<double, 2>;
+using vertex_d = georhiau::vertex<double, 2>;
 
 // very silly aglo to calculate Relative Neibourhood graph.
 auto rng(const std::vector<vertex_d>& cloud) {
@@ -21,13 +20,13 @@ auto rng(const std::vector<vertex_d>& cloud) {
         for (const auto& q : cloud) {
             if (p == q) continue;
             // calculate the distance between them
-            auto d = georhiau::core::norm(p - q);
+            auto d = georhiau::norm(p - q);
             auto min = std::numeric_limits<double>::max();
             for (const auto& x : cloud) {
                 // if r is one of p or q then move on
                 if (p == x || q == x) continue;
-                auto xp = georhiau::core::norm(x - p);
-                auto xq = georhiau::core::norm(x - q);
+                auto xp = georhiau::norm(x - p);
+                auto xq = georhiau::norm(x - q);
                 auto max = std::max(xp, xq);
                 if (max < min) min = max;
             }
@@ -40,6 +39,5 @@ auto rng(const std::vector<vertex_d>& cloud) {
     }
     return edges;
 }
-}  // namespace algo
 }  // namespace georhiau
 

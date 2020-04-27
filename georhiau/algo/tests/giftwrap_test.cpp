@@ -7,16 +7,16 @@
 
 #include <list>
 #include <vector>
-using vertex = georhiau::core::vertex<double, 2>;
-using edge = georhiau::core::edge<double, 2>;
+using vertex = georhiau::vertex<double, 2>;
+using edge = georhiau::edge<double, 2>;
 using point_cloud = std::vector<vertex>;
 
 const point_cloud cloud1 = {{1.0, 5.0}, {2.0, 2.0}, {3.0, 3.0},
                             {0.0, 1.0}, {3.0, 2.0}, {10.0, 3.0},
                             {5.0, 1.0}, {8.0, 0.5}, {14.0, 3.0}};
 
-using georhiau::algo::first_hull_edge;
-using georhiau::algo::left_most_edge;
+using georhiau::first_hull_edge;
+using georhiau::left_most_edge;
 
 TEST(giftwrap, left_most_edge) {
     auto e1 = left_most_edge(cloud1[3], cloud1);
@@ -40,7 +40,7 @@ TEST(giftwrap, first_hull_edge) {
     ASSERT_EQ(hull_edge, hull_edge_ans);
 }
 
-using georhiau::algo::giftwrap;
+using georhiau::giftwrap;
 
 TEST(giftwrap, giftwrap) {
     auto convex_hull = giftwrap(cloud1);

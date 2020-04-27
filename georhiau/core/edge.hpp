@@ -2,7 +2,6 @@
 #include "core/vertex.hpp"
 
 namespace georhiau {
-namespace core {
 
 template <typename T, std::size_t D>
 class edge {
@@ -74,7 +73,7 @@ inline intersect_type_param<T, D> intersect(const edge<T, D>& e1,
 template <typename T, std::size_t D>
 inline T length(const edge<T, D>& e) {
     auto diff = e.dest() - e.orig();
-    return georhiau::core::norm(diff);
+    return georhiau::norm(diff);
 }
 
 template <typename T, std::size_t D>
@@ -102,6 +101,5 @@ inline void print(const edge<T, D>& e) {
     std::cout << std::endl;
 }
 
-}  // namespace core
 }  // namespace georhiau
 
