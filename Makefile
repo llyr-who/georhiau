@@ -8,6 +8,10 @@ BUILDDIR := ./build
 all: ${BUILDDIR}/Makefile
 	@$(MAKE) -C ${BUILDDIR}
 
+.PHONY: test
+test:
+	make && cd ${BUILDDIR} && ctest
+
 .PHONY: clean
 clean:
 	rm -rf ${BUILDDIR}
