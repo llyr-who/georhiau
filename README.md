@@ -19,6 +19,12 @@ To clean
 
 `make clean`
 
+To produce different builds (e.g. Release), run
+
+`make BUILD_TYPE=<build-type>`
+
+If no `BUILD_TYPE` is entered, it defaults to Debug.
+
 ## Things to be done
 
 - [x] Implement minimize maximum angle constraint triangulation (Delaunay)
