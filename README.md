@@ -25,6 +25,10 @@ To produce different builds (e.g. Release), run
 
 If no `BUILD_TYPE` is entered, it defaults to Debug.
 
+To generate docs
+
+`cd build && make docs && google-chrome docs/html/index.html && cd ..`
+
 ## Things to be done
 
 - [x] Implement minimize maximum angle constraint triangulation (Delaunay)
