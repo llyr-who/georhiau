@@ -25,9 +25,16 @@ To produce different builds (e.g. Release), run
 
 If no `BUILD_TYPE` is entered, it defaults to Debug.
 
-To generate docs
+To generate documentation, make sure doxygen is installed. More specifically the packages, doxygen, doxygen-gui and graph-viz. Once these packages are installed you can run:
 
-`cd build && make docs && google-chrome docs/html/index.html && cd ..`
+On Linux:
+`cd build && make docs && <browser> docs/html/index.html && cd ..`
+
+On MacOS:
+`cd build && make docs && open docs/html/index.html && cd ..`
+
+On Windows:
+`no`
 
 ## Things to be done
 
