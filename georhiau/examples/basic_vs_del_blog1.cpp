@@ -24,8 +24,8 @@ int main() {
     std::vector<vtx> cloud = {a, b, c, d};
 
     auto tris = georhiau::inc_trgtn(cloud);
-    georhiau::view::plot(tris);
+    georhiau::plot(tris);
     tris = georhiau::delaunay(cloud);
-    georhiau::view::plot(tris);
+    georhiau::plot(tris);
 }
 

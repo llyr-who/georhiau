@@ -34,5 +34,5 @@ int main() {
     std::cout << "total area of triangles: " << area << std::endl;
     std::cout << "expected area (area of unit circle): " << pi() << std::endl;
 
-    georhiau::view::plot(tris);
+    georhiau::plot(tris);
 }

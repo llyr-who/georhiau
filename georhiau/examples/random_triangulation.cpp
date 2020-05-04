@@ -25,6 +25,6 @@ int main() {
 
     auto tris = georhiau::delaunay(cloud);
 
-    georhiau::view::plot(tris);
+    georhiau::plot(tris);
 }
 
