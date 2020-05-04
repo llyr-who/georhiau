@@ -22,6 +22,6 @@ int main() {
     }
 
     auto edges = georhiau::rng(cloud);
-    georhiau::view::plot(edges);
+    georhiau::plot(edges);
 }
 

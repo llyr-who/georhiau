@@ -10,7 +10,6 @@ static int w = 0;
 static int h = 0;
 
 namespace georhiau {
-namespace view {
 
 static void error_callback(int error, const char* description) {
     fprintf(stderr, "Error: %s\n", description);
@@ -234,5 +233,4 @@ auto plot(std::list<georhiau::vertex<double, 2>>& ps) {
     exit(window);
 }
 
-}  // namespace view
 }  // namespace georhiau
