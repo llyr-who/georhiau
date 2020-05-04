@@ -76,6 +76,7 @@ inline T length(const edge<T, D>& e) {
     return georhiau::norm(diff);
 }
 
+//! rotates clockwise!
 template <typename T, std::size_t D>
 inline edge<T, D> rotate(const edge<T, D>& e) {
     auto orig = e.orig();
