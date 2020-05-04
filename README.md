@@ -25,7 +25,7 @@ To produce different builds (e.g. Release), run
 
 If no `BUILD_TYPE` is entered, it defaults to Debug.
 
-To generate documentation, make sure doxygen is installed. More specifically the packages, doxygen, doxygen-gui and graph-viz. Once these packages are installed you can run:
+To generate documentation, make sure doxygen is installed. More specifically the packages, doxygen, doxygen-gui and graph-viz. On MacOS you can just `brew install graphviz`. Once these packages are installed you can run:
 
 On Linux:
 `cd build && make docs && <browser> docs/html/index.html && cd ..`
