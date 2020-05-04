@@ -81,7 +81,7 @@ auto delaunay(std::vector<vertex<T, 2>> cloud) {
     int I = 0;
     while (!f.empty()) {
         auto e = f.pop_min();
-        auto p = mate2(e, cloud);
+        auto p = mate(e, cloud);
         if (p == cloud.end()) continue;
         bool face1 = f.update(*p, e.orig());
         bool face2 = f.update(e.dest(), *p);
