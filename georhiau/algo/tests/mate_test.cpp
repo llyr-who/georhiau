@@ -106,8 +106,6 @@ TEST(mate, circle) {
         edge e5(c0[1], c0[3]);
         em0 = georhiau::mate(e5, c0);
         em1 = georhiau::mate2(e5, c0);
-        georhiau::print(*em0);
-        georhiau::print(*em1);
         ASSERT_EQ(*em1, *em0);
 
         edge e6(c0[2], c0[3]);

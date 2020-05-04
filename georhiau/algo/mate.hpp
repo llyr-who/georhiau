@@ -17,6 +17,8 @@ auto mate(const edge<T, 2>& e, const std::vector<vertex<T, 2>>& cloud) {
     T t, best_t = std::numeric_limits<T>::max();
     auto e_rot = georhiau::rotate(e);
     for (auto pnt = cloud.begin(); pnt != cloud.end(); ++pnt) {
+        // if pnt is equal to orig or dest , move on
+        if(*pnt == e.orig() || *pnt == e.dest()) continue;
         // obtain midpoint
         auto m = e.midpoint();
         // change of origin
