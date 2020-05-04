@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <limits>
 #include <memory>
-#include <optional>
 #include <vector>
 
 #include "core/edge.hpp"
