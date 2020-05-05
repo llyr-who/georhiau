@@ -186,6 +186,9 @@ auto get_window() {
     glfwSetErrorCallback(error_callback);
     glfwInit();
 
+	// added to ensure resolution() returns correct values for MacOS
+	glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE);
+
     // Obtain monitor resolution.
     auto res = resolution();
     // We want to take up one quarter of screen space
