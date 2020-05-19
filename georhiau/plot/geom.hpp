@@ -8,14 +8,28 @@
 
 #include "core/edge.hpp"
 #include "core/triangle.hpp"
+#include "plot/window.hpp"
 
 namespace georhiau {
+namespace plt {
 
 // triangles
 
-void draw(const std::list<georhiau::triangle<double>>& tris) {
-    glViewport(0, 0, w, h);
+// returns scaling factors for glOrtho
+auto projection_params(const std::list<georhiau::triangle<double>>& tris) {
+    auto max_w = 0.0;
+    auto max_h = 0.0;
 
+    for (const auto& t : tris) {
+        for (std::size_t i = 0; i < 3; ++i) {
+            if (t[i][0] > max_w) max_w = t[i][0];
+            if (t[i][1] > max_h) max_h = t[i][1];
+        }
+    }
+    return std::make_pair(max_w, max_h);
+}
+
+void draw(const std::list<georhiau::triangle<double>>& tris) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
@@ -38,28 +52,27 @@ void draw(const std::list<georhiau::triangle<double>>& tris) {
     }
 }
 
-// returns scaling factors for glOrtho
-auto projection_params(const std::list<georhiau::triangle<double>>& tris) {
-    auto max_w = 0.0;
-    auto max_h = 0.0;
-
-    for (const auto& t : tris) {
-        for (std::size_t i = 0; i < 3; ++i) {
-            if (t[i][0] > max_w) max_w = t[i][0];
-            if (t[i][1] > max_h) max_h = t[i][1];
-        }
-    }
-    return std::make_pair(max_w, max_h);
-}
-
 using georhiau::norm;
 using georhiau::rotate;
 
 // edges
 
-void draw(const std::list<georhiau::edge<double, 2>>& es) {
-    glViewport(0, 0, w, h);
+auto projection_params(const std::list<georhiau::edge<double, 2>>& es) {
+    auto max_w = 0.0;
+    auto max_h = 0.0;
 
+    for (const auto& e : es) {
+        auto o = e.orig();
+        auto d = e.dest();
+        if (o[0] > max_w) max_w = o[0];
+        if (o[1] > max_h) max_h = o[1];
+        if (d[0] > max_w) max_w = d[0];
+        if (d[1] > max_h) max_h = d[1];
+    }
+    return std::make_pair(max_w, max_h);
+}
+
+void draw(const std::list<georhiau::edge<double, 2>>& es) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
@@ -96,26 +109,20 @@ void draw(const std::list<georhiau::edge<double, 2>>& es) {
     }
 }
 
-auto projection_params(const std::list<georhiau::edge<double, 2>>& es) {
+// vertices
+
+auto projection_params(const std::list<georhiau::vertex<double, 2>>& ps) {
     auto max_w = 0.0;
     auto max_h = 0.0;
 
-    for (const auto& e : es) {
-        auto o = e.orig();
-        auto d = e.dest();
-        if (o[0] > max_w) max_w = o[0];
-        if (o[1] > max_h) max_h = o[1];
-        if (d[0] > max_w) max_w = d[0];
-        if (d[1] > max_h) max_h = d[1];
+    for (const auto& v : ps) {
+        if (v[0] > max_w) max_w = v[0];
+        if (v[1] > max_h) max_h = v[1];
     }
     return std::make_pair(max_w, max_h);
 }
 
-// vertices
-
 void draw(const std::list<georhiau::vertex<double, 2>>& ps) {
-    glViewport(0, 0, w, h);
-
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
@@ -135,16 +142,5 @@ void draw(const std::list<georhiau::vertex<double, 2>>& ps) {
         glEnd();
     }
 }
-
-auto projection_params(const std::list<georhiau::vertex<double, 2>>& ps) {
-    auto max_w = 0.0;
-    auto max_h = 0.0;
-
-    for (const auto& v : ps) {
-        if (v[0] > max_w) max_w = v[0];
-        if (v[1] > max_h) max_h = v[1];
-    }
-    return std::make_pair(max_w, max_h);
-}
-
+}  // namespace plot
 }  // namespace georhiau

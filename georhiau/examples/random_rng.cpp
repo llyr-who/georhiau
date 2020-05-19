@@ -1,7 +1,7 @@
 #include <random>
 
 #include "algo/rng.hpp"
-#include "view/plot.hpp"
+#include "plot/plot.hpp"
 
 int main() {
     using vtx = georhiau::vertex<double, 2>;
