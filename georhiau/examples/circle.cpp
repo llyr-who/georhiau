@@ -3,7 +3,7 @@
 
 #include "algo/delaunay.hpp"
 #include "core/vertex.hpp"
-#include "view/plot.hpp"
+#include "plot/plot.hpp"
 
 using vertex = georhiau::vertex<double, 2>;
 double pi() { return std::atan(1) * 4; }
@@ -35,4 +35,5 @@ int main() {
     std::cout << "expected area (area of unit circle): " << pi() << std::endl;
 
     georhiau::plot(tris);
+    georhiau::show_plots();
 }

@@ -1,6 +1,6 @@
 #include <random>
 
-#include "view/plot.hpp"
+#include "plot/plot.hpp"
 #include "algo/delaunay.hpp"
 
 int main() {
@@ -26,5 +26,6 @@ int main() {
     auto tris = georhiau::delaunay(cloud);
 
     georhiau::plot(tris);
+    georhiau::show_plots();
 }
 

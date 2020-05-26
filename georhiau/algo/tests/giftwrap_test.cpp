@@ -1,7 +1,7 @@
 #include "algo/giftwrap.hpp"
 #include "core/edge.hpp"
 
-#include "view/plot.hpp"
+#include "plot/plot.hpp"
 
 #include "gtest/gtest.h"
 

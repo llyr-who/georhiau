@@ -2,7 +2,7 @@
 
 #include "algo/delaunay.hpp"
 #include "algo/inc_trgtn.hpp"
-#include "view/plot.hpp"
+#include "plot/plot.hpp"
 
 int main() {
     using vtx = georhiau::vertex<double, 2>;
@@ -27,5 +27,6 @@ int main() {
     georhiau::plot(tris);
     tris = georhiau::delaunay(cloud);
     georhiau::plot(tris);
+    georhiau::show_plots();
 }
 

@@ -16,7 +16,5 @@ fetch_googletest(
     ${PROJECT_BINARY_DIR}/googletest
     )
 
-
-
 add_subdirectory(docs)
 add_subdirectory(georhiau)

@@ -1,7 +1,7 @@
 #include <random>
 
 #include "algo/rng.hpp"
-#include "view/plot.hpp"
+#include "plot/plot.hpp"
 
 int main() {
     using vtx = georhiau::vertex<double, 2>;
@@ -23,5 +23,6 @@ int main() {
 
     auto edges = georhiau::rng(cloud);
     georhiau::plot(edges);
+    georhiau::show_plots();
 }
 
