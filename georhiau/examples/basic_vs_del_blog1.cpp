@@ -27,5 +27,6 @@ int main() {
     georhiau::plot(tris);
     tris = georhiau::delaunay(cloud);
     georhiau::plot(tris);
+    georhiau::show_plots();
 }
 

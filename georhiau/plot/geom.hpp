@@ -4,11 +4,13 @@
 #define GL_SILENCE_DEPRECATION
 #endif
 
+#include <GLFW/glfw3.h>
+
 #include <list>
+#include <variant>
 
 #include "core/edge.hpp"
 #include "core/triangle.hpp"
-#include "plot/window.hpp"
 
 namespace georhiau {
 namespace plt {
@@ -142,5 +144,5 @@ void draw(const std::list<georhiau::vertex<double, 2>>& ps) {
         glEnd();
     }
 }
-}  // namespace plot
+}  // namespace plt
 }  // namespace georhiau

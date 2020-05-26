@@ -8,7 +8,6 @@
 
 #include <any>
 
-#include "plot/item_container.hpp"
 #include "plot/geom.hpp"
 
 namespace georhiau {
@@ -16,7 +15,6 @@ namespace plt {
 class figure_window {
 private:
     GLFWwindow* wndw_;
-    item_container itms_;
 
     int w_ = 0;
     int h_ = 0;
@@ -55,7 +53,7 @@ public:
         h_ = res.first / 4;
 
         wndw_ = glfwCreateWindow(w_, h_, "GeoRhiau", nullptr, nullptr);
-        if (wndw_) {
+        if (!wndw_) {
             return;
         }
 
@@ -76,22 +74,17 @@ public:
         }
     }
 
-    template <typename T>
-    void set_items(const std::list<T>& itms) { itms_.set_items<T>(itms); }
-
-    int width() { return w_; }
-
-    int height() { return h_; }
-
     bool windowShouldClose() { return glfwWindowShouldClose(wndw_); }
 
-    void run() {
+    template <typename T>
+    void run(std::list<T> items) {
         glfwMakeContextCurrent(wndw_);
 
         glClearColor(0.98f, 0.98f, 0.98f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //draw(items);
+        glViewport(0, 0, w_, h_);
+        draw(items);
 
         glfwSwapBuffers(wndw_);
         glfwPollEvents();

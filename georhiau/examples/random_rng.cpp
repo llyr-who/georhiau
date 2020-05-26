@@ -23,5 +23,6 @@ int main() {
 
     auto edges = georhiau::rng(cloud);
     georhiau::plot(edges);
+    georhiau::show_plots();
 }
 

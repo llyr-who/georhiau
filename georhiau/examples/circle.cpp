@@ -35,4 +35,5 @@ int main() {
     std::cout << "expected area (area of unit circle): " << pi() << std::endl;
 
     georhiau::plot(tris);
+    georhiau::show_plots();
 }
