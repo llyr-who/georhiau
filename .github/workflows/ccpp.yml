@@ -1,10 +1,6 @@
 name: C/C++ CI
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [ push, pull_request ]
 
 jobs:
   build:
@@ -13,6 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: install glfw
+      run: sudo apt-get install libglfw3-dev libglfw3
     - name: cmake
       run: cmake -H. -Bbuild
     - name: make 

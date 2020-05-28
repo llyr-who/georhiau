@@ -41,9 +41,11 @@ public:
         // glfw initialisation.
         glfwSetErrorCallback(error_callback);
         glfwInit();
-
+       
+        #ifdef __APPLE__
         // added to ensure resolution() returns correct values for MacOS
         glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE);
+        #endif
 
         // Obtain monitor resolution.
         auto res = resolution();
