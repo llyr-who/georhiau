@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: install glfw
+      run: sudo apt-get install libglfw3
     - name: cmake
       run: cmake -H. -Bbuild
     - name: make 
